@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+            {% if site_settings %}{{ site_settings.site_title }}{% else %}দুর্গা মন্দির{% endif %}
+        {% endblock %}
+    </title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts for Bengali -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css for animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            line-height: 1.6;
+        }
+        
+        /* Custom Navbar Styling - Better readability */
+        .navbar {
+            background: linear-gradient(90deg, #2c3e50 0%, #34495e 25%, #e74c3c 50%, #c0392b 75%, #8e44ad 100%) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            padding: 0.5rem 0;
+            min-height: 60px;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.7rem;
+            color: #fff !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-right: 2rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-nav {
+            align-items: center;
+        }
+        
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: 600;
+            margin: 0 0.3rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            border: 2px solid transparent;
+        }
+        
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link:focus {
+            background-color: rgba(255,255,255,0.2);
+            color: #fff !important;
+            transform: translateY(-2px);
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        /* Responsive menu fixes */
+        @media (max-width: 991.98px) {
+            .navbar-nav .nav-link {
+                margin: 0.2rem 0;
+                padding: 0.7rem 1.5rem !important;
+                text-align: center;
+                background-color: rgba(0,0,0,0.1);
+                border-radius: 15px;
+            }
+            
+            .navbar-nav .nav-link:hover {
+                background-color: rgba(255,255,255,0.25);
+                transform: none;
+            }
+        }
+        
+        .navbar .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .navbar-toggler {
+            border: 2px solid rgba(255,255,255,0.8);
+            padding: 0.4rem 0.6rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-toggler:hover {
+            border-color: white;
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        /* Dropdown Menu Styling */
+        .dropdown-menu {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #e74c3c 100%);
+            border: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+        
+        .dropdown-item {
+            color: white !important;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: rgba(255,255,255,0.25) !important;
+            color: white !important;
+            transform: translateX(5px);
+        }
+        
+        /* Search button styling */
+        .navbar .btn-outline-light {
+            border: 2px solid white;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .navbar .btn-outline-light:hover {
+            background-color: white;
+            color: #e91e63;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+        }
+        .card {
+            transition: transform 0.2s;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 2rem 0;
+        }
+        .btn-primary {
+            background: #667eea;
+            border-color: #667eea;
+        }
+        .btn-primary:hover {
+            background: #764ba2;
+            border-color: #764ba2;
+        }
+        .section-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+        /* Slider Styles */
+        .slider-section {
+            position: relative;
+        }
+        .carousel-bg {
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 70vh;
+            max-height: 80vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Alternative image display method */
+        .carousel-item {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+        
+        .carousel-item img {
+            width: 100%;
+            height: 70vh;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+        }
+        
+        /* Better image container for any size image */
+        .carousel-item-container {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+        }
+        
+        .carousel-item-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Hover effect for images */
+        .carousel-item:hover .carousel-item-container img {
+            transform: scale(1.05);
+        }
+        
+        /* Aspect ratio container (fallback) */
+        .aspect-ratio-16-9 {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .aspect-ratio-16-9 img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel-content {
+            z-index: 2;
+            position: relative;
+        }
+        .carousel-item {
+            transition: transform 0.6s ease-in-out;
+        }
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 8%;
+            z-index: 10;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            opacity: 1;
+        }
+        
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: rgba(0,0,0,0.7);
+            border-radius: 50%;
+            padding: 25px;
+            width: 50px;
+            height: 50px;
+            background-size: 60%;
+        }
+        
+        /* Ensure controls are clickable */
+        .carousel-control-prev,
+        .carousel-control-next {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            color: #fff;
+            text-align: center;
+            background: none;
+            border: 0;
+        }
+        .carousel-indicators [data-bs-target] {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 0 5px;
+        }
+        
+        /* Text overlay styling */
+        .carousel-caption-overlay {
+            background: rgba(0,0,0,0.4);
+        }
+        
+        /* Fix for carousel control positioning */
+        .carousel-control-prev {
+            left: 0;
+        }
+        
+        .carousel-control-next {
+            right: 0;
+        }
+        
+        /* Make sure controls are always visible */
+        .slider-section .carousel-control-prev,
+        .slider-section .carousel-control-next {
+            z-index: 15 !important;
+            pointer-events: auto;
+        }
+        
+        /* Add hover effect for better visibility */
+        .carousel:hover .carousel-control-prev,
+        .carousel:hover .carousel-control-next {
+            opacity: 1;
+        }
+        
+        /* Responsive text sizing */
+        @media (max-width: 768px) {
+            .carousel-content h1 {
+                font-size: 2rem !important;
+            }
+            .carousel-content .lead {
+                font-size: 1rem;
+            }
+            .carousel-item img {
+                height: 50vh;
+            }
+            .carousel-bg {
+                min-height: 50vh;
+            }
+        }
+        
+        /* Better text shadow for readability */
+        .carousel-content h1,
+        .carousel-content p {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        /* Home page background pattern */
+        .home-page-bg {
+            background-image: url('{% load static %}{% static "images/background-pattern.png" %}');
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        /* Overlay for better text readability */
+        .home-page-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* Ensure content is above overlay */
+        .home-page-bg > * {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Alternative: Direct section backgrounds */
+        .section-with-pattern {
+            background-image: url('{% load static %}{% static "images/background-pattern.png" %}');
+            background-repeat: repeat;
+            background-size: 150px 150px;
+            background-attachment: local;
+            position: relative;
+        }
+        
+        .section-with-pattern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.92);
+            z-index: 1;
+        }
+        
+        .section-with-pattern > * {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}"
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'durga:home' %}">
+                {% if site_settings and site_settings.logo %}
+                    <img src="{{ site_settings.logo.url }}" alt="Logo" height="40" class="me-2">
+                {% endif %}
+                {% if site_settings %}{{ site_settings.site_title }}{% else %}দুর্গা মন্দির{% endif %}
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'durga:home' %}">প্রচ্ছদ</a>
+                    </li>
+                    
+                    {% for page in menu_pages %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+                        </li>
+                    {% endfor %}
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'durga:events' %}">অনুষ্ঠান</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'durga:gallery' %}">গ্যালারি</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'durga:committee' %}">কমিটি</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'durga:durga_sangha' %}">দুর্গা সংঘ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'durga:contact' %}">যোগাযোগ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>{% if site_settings %}{{ site_settings.site_title }}{% else %}দুর্গা মন্দির{% endif %}</h5>
+                    {% if site_settings and site_settings.site_description %}
+                        <p>{{ site_settings.site_description|truncatewords:20 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-3">
+                    <h5>যোগাযোগ</h5>
+                    {% if site_settings %}
+                        {% if site_settings.contact_phone %}
+                            <p><i class="fas fa-phone me-2"></i>{{ site_settings.contact_phone }}</p>
+                        {% endif %}
+                        {% if site_settings.contact_email %}
+                            <p><i class="fas fa-envelope me-2"></i>{{ site_settings.contact_email }}</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-3">
+                    <h5>সামাজিক মাধ্যম</h5>
+                    <div class="d-flex">
+                        {% if site_settings and site_settings.facebook_url %}
+                            <a href="{{ site_settings.facebook_url }}" class="text-white me-3" target="_blank">
+                                <i class="fab fa-facebook fa-lg"></i>
+                            </a>
+                        {% endif %}
+                        {% if site_settings and site_settings.youtube_url %}
+                            <a href="{{ site_settings.youtube_url }}" class="text-white me-3" target="_blank">
+                                <i class="fab fa-youtube fa-lg"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>&copy; ২০২৫ {% if site_settings %}{{ site_settings.site_title }}{% else %}দুর্গা মন্দির{% endif %} | সর্বস্বত্ব সংরক্ষিত</p>
+                    {% if site_settings and site_settings.footer_text %}
+                        <p>{{ site_settings.footer_text }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+            <!-- Enhanced Carousel Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var carousel = document.querySelector('#heroCarousel');
+            if (carousel) {
+                console.log('Carousel found and initializing...');
+                
+                // Initialize Bootstrap carousel
+                var bsCarousel = new bootstrap.Carousel(carousel, {
+                    interval: 5000,
+                    keyboard: true,
+                    pause: 'hover',
+                    ride: 'carousel',
+                    wrap: true,
+                    touch: true
+                });
+                
+                // Manual control event listeners
+                const prevBtn = document.querySelector('.carousel-control-prev');
+                const nextBtn = document.querySelector('.carousel-control-next');
+                
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        console.log('Previous button clicked');
+                        bsCarousel.prev();
+                    });
+                }
+                
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        console.log('Next button clicked');
+                        bsCarousel.next();
+                    });
+                }
+                
+                // Indicator buttons
+                const indicators = document.querySelectorAll('[data-bs-slide-to]');
+                indicators.forEach((indicator, index) => {
+                    indicator.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        console.log('Indicator clicked:', index);
+                        bsCarousel.to(index);
+                    });
+                });
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowLeft') {
+                        bsCarousel.prev();
+                    } else if (e.key === 'ArrowRight') {
+                        bsCarousel.next();
+                    }
+                });
+                
+                console.log('Carousel fully initialized with manual controls');
+                
+                // Fallback manual slider (if Bootstrap fails)
+                let currentSlide = 0;
+                const slides = document.querySelectorAll('.carousel-item');
+                const totalSlides = slides.length;
+                
+                function showSlide(n) {
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    currentSlide = (n + totalSlides) % totalSlides;
+                    slides[currentSlide].classList.add('active');
+                    
+                    // Update indicators
+                    const indicators = document.querySelectorAll('[data-bs-slide-to]');
+                    indicators.forEach((indicator, index) => {
+                        indicator.classList.toggle('active', index === currentSlide);
+                        indicator.setAttribute('aria-current', index === currentSlide ? 'true' : 'false');
+                    });
+                }
+                
+                // Fallback navigation
+                window.nextSlide = function() {
+                    showSlide(currentSlide + 1);
+                };
+                
+                window.prevSlide = function() {
+                    showSlide(currentSlide - 1);
+                };
+                
+                // Add fallback click events
+                setTimeout(() => {
+                    const prevBtnFallback = document.querySelector('.carousel-control-prev');
+                    const nextBtnFallback = document.querySelector('.carousel-control-next');
+                    
+                    if (prevBtnFallback) {
+                        prevBtnFallback.setAttribute('onclick', 'window.prevSlide()');
+                    }
+                    if (nextBtnFallback) {
+                        nextBtnFallback.setAttribute('onclick', 'window.nextSlide()');
+                    }
+                }, 1000);
+                
+            } else {
+                console.log('Carousel not found!');
+            }
+        });
+    </script>    {% block extra_js %}{% endblock %}
+</body>
+</html>

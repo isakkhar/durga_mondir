@@ -1,0 +1,131 @@
+{% extends 'durga_mondir/base.html' %}
+{% load static %}
+
+{% block title %}অনুষ্ঠানসমূহ - {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Background pattern for all pages */
+    body {
+        background-image: url('{% static "images/bg.jpg" %}');
+        background-repeat: repeat;
+        background-size: 200px 200px;
+        background-attachment: fixed;
+        overflow-x: hidden;
+    }
+    
+    /* Text readability improvements */
+    .card {
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+        color: #2c3e50;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>অনুষ্ঠানসমূহ</h1>
+        
+        <!-- Filter Options -->
+        <div class="btn-group" role="group">
+            <a href="{% url 'durga:events' %}" class="btn {% if filter_type == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}">সকল</a>
+            <a href="{% url 'durga:events' %}?filter=upcoming" class="btn {% if filter_type == 'upcoming' %}btn-primary{% else %}btn-outline-primary{% endif %}">আসন্ন</a>
+            <a href="{% url 'durga:events' %}?filter=past" class="btn {% if filter_type == 'past' %}btn-primary{% else %}btn-outline-primary{% endif %}">অতীত</a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for event in events %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 {% if event.is_upcoming %}border-primary{% endif %}">
+                    {% if event.featured_image %}
+                        <img src="{{ event.featured_image.url }}" class="card-img-top" alt="{{ event.title }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+                            <i class="fas fa-calendar-alt fa-3x text-muted"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        {% if event.is_upcoming %}
+                            <span class="badge bg-success mb-2 align-self-start">আসন্ন</span>
+                        {% else %}
+                            <span class="badge bg-secondary mb-2 align-self-start">সম্পন্ন</span>
+                        {% endif %}
+                        
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                        
+                        <div class="mt-auto">
+                            <p class="text-primary mb-2">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                {{ event.date_time|date:"d F Y" }}
+                            </p>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-clock me-2"></i>
+                                {{ event.date_time|date:"g:i A" }}
+                            </p>
+                            <p class="text-muted">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                {{ event.location }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="fas fa-calendar-alt fa-3x text-muted mb-3"></i>
+                    <h4>কোনো অনুষ্ঠান পাওয়া যায়নি</h4>
+                    {% if filter_type == 'upcoming' %}
+                        <p class="text-muted">বর্তমানে কোনো আসন্ন অনুষ্ঠান নেই।</p>
+                    {% elif filter_type == 'past' %}
+                        <p class="text-muted">কোনো অতীত অনুষ্ঠান পাওয়া যায়নি।</p>
+                    {% else %}
+                        <p class="text-muted">শীঘ্রই নতুন অনুষ্ঠান যোগ করা হবে।</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if events.has_other_pages %}
+        <nav aria-label="অনুষ্ঠান পেজিনেশন">
+            <ul class="pagination justify-content-center">
+                {% if events.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ events.previous_page_number }}{% if filter_type != 'all' %}&filter={{ filter_type }}{% endif %}">পূর্ববর্তী</a>
+                    </li>
+                {% endif %}
+
+                {% for num in events.paginator.page_range %}
+                    {% if events.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > events.number|add:'-3' and num < events.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% if filter_type != 'all' %}&filter={{ filter_type }}{% endif %}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if events.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ events.next_page_number }}{% if filter_type != 'all' %}&filter={{ filter_type }}{% endif %}">পরবর্তী</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

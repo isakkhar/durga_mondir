@@ -1,0 +1,262 @@
+from django.db import models
+from django.urls import reverse
+from django.utils import timezone
+from django.contrib.auth.models import User
+from PIL import Image
+import os
+
+# Page Management Models
+class Page(models.Model):
+    title = models.CharField(max_length=200, verbose_name="পাতার শিরোনাম")
+    slug = models.SlugField(max_length=200, unique=True, verbose_name="URL স্লাগ")
+    content = models.TextField(verbose_name="বিষয়বস্তু")
+    meta_description = models.CharField(max_length=255, blank=True, verbose_name="মেটা বিবরণ")
+    featured_image = models.ImageField(upload_to='pages/', blank=True, null=True, verbose_name="প্রধান ছবি")
+    is_published = models.BooleanField(default=True, verbose_name="প্রকাশিত")
+    show_in_menu = models.BooleanField(default=False, verbose_name="মেনুতে দেখান")
+    menu_order = models.IntegerField(default=0, verbose_name="মেনু ক্রম")
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, verbose_name="মূল পাতা")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="তৈরির তারিখ")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="সর্বশেষ আপডেট")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="লেখক")
+    
+    class Meta:
+        verbose_name = "পাতা"
+        verbose_name_plural = "পাতাসমূহ"
+        ordering = ['menu_order', 'title']
+    
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse('durga:page_detail', kwargs={'slug': self.slug})
+
+
+
+# Events Model
+class Event(models.Model):
+    title = models.CharField(max_length=200, verbose_name="অনুষ্ঠানের নাম")
+    description = models.TextField(verbose_name="বিবরণ")
+    date_time = models.DateTimeField(verbose_name="তারিখ ও সময়")
+    location = models.CharField(max_length=200, verbose_name="স্থান")
+    featured_image = models.ImageField(upload_to='events/', blank=True, null=True, verbose_name="প্রধান ছবি")
+    is_featured = models.BooleanField(default=False, verbose_name="বৈশিষ্ট্যযুক্ত")
+    is_active = models.BooleanField(default=True, verbose_name="সক্রিয়")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="তৈরির তারিখ")
+    
+    class Meta:
+        verbose_name = "অনুষ্ঠান"
+        verbose_name_plural = "অনুষ্ঠানসমূহ"
+        ordering = ['date_time']
+    
+    def __str__(self):
+        return self.title
+    
+    @property
+    def is_upcoming(self):
+        return self.date_time > timezone.now()
+
+# Gallery Model
+class GalleryAlbum(models.Model):
+    title = models.CharField(max_length=200, verbose_name="অ্যালবামের নাম")
+    description = models.TextField(blank=True, verbose_name="বিবরণ")
+    cover_image = models.ImageField(upload_to='albums/covers/', blank=True, null=True, verbose_name="কভার ছবি")
+    is_featured = models.BooleanField(default=False, verbose_name="বৈশিষ্ট্যযুক্ত")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="তৈরির তারিখ")
+    
+    class Meta:
+        verbose_name = "গ্যালারি অ্যালবাম"
+        verbose_name_plural = "গ্যালারি অ্যালবামসমূহ"
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return self.title
+    
+    def get_photos_count(self):
+        return self.photos.count()
+
+class GalleryPhoto(models.Model):
+    album = models.ForeignKey(GalleryAlbum, on_delete=models.CASCADE, related_name='photos', verbose_name="অ্যালবাম")
+    title = models.CharField(max_length=200, blank=True, verbose_name="ছবির নাম")
+    image = models.ImageField(upload_to='albums/photos/', verbose_name="ছবি")
+    description = models.TextField(blank=True, verbose_name="বিবরণ")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="আপলোড তারিখ")
+    
+    class Meta:
+        verbose_name = "গ্যালারি ছবি"
+        verbose_name_plural = "গ্যালারি ছবিসমূহ"
+        ordering = ['created_at']
+    
+    def __str__(self):
+        return f"{self.album.title} - {self.title or 'ছবি'}"
+
+class Gallery(models.Model):
+    GALLERY_TYPES = [
+        ('photo', 'ছবি'),
+        ('video', 'ভিডিও'),
+    ]
+    
+    title = models.CharField(max_length=200, verbose_name="শিরোনাম")
+    description = models.TextField(blank=True, verbose_name="বিবরণ")
+    gallery_type = models.CharField(max_length=10, choices=GALLERY_TYPES, default='photo', verbose_name="গ্যালারির ধরণ")
+    image = models.ImageField(upload_to='gallery/', blank=True, null=True, verbose_name="ছবি")
+    video_url = models.URLField(blank=True, verbose_name="ভিডিও লিংক")
+    is_featured = models.BooleanField(default=False, verbose_name="বৈশিষ্ট্যযুক্ত")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="তৈরির তারিখ")
+    
+    class Meta:
+        verbose_name = "গ্যালারি"
+        verbose_name_plural = "গ্যালারিসমূহ"
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return self.title
+    
+    def get_youtube_embed_url(self):
+        """Convert YouTube watch URL to embed URL"""
+        if self.video_url and ('youtube.com' in self.video_url or 'youtu.be' in self.video_url):
+            import re
+            # Extract video ID from various YouTube URL formats
+            patterns = [
+                r'(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)',
+            ]
+            
+            for pattern in patterns:
+                match = re.search(pattern, self.video_url)
+                if match:
+                    video_id = match.group(1)
+                    return f'https://www.youtube.com/embed/{video_id}'
+        
+        return self.video_url
+
+# Contact/Donation Model
+class Contact(models.Model):
+    name = models.CharField(max_length=100, verbose_name="নাম")
+    email = models.EmailField(verbose_name="ইমেইল")
+    phone = models.CharField(max_length=20, blank=True, verbose_name="ফোন")
+    subject = models.CharField(max_length=200, verbose_name="বিষয়")
+    message = models.TextField(verbose_name="বার্তা")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="তৈরির তারিখ")
+    is_read = models.BooleanField(default=False, verbose_name="পড়া হয়েছে")
+    
+    class Meta:
+        verbose_name = "যোগাযোগ"
+        verbose_name_plural = "যোগাযোগসমূহ"
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.name} - {self.subject}"
+
+# Slider Model
+class Slider(models.Model):
+    title = models.CharField(max_length=200, verbose_name="শিরোনাম")
+    subtitle = models.CharField(max_length=300, blank=True, verbose_name="উপশিরোনাম")
+    description = models.TextField(blank=True, verbose_name="বিবরণ")
+    image = models.ImageField(upload_to='slider/', verbose_name="স্লাইডার ছবি")
+    button_text = models.CharField(max_length=50, blank=True, verbose_name="বাটনের টেক্সট")
+    button_link = models.CharField(max_length=200, blank=True, verbose_name="বাটনের লিংক")
+    is_active = models.BooleanField(default=True, verbose_name="সক্রিয়")
+    order = models.IntegerField(default=0, verbose_name="ক্রম")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="তৈরির তারিখ")
+    
+    class Meta:
+        verbose_name = "স্লাইডার"
+        verbose_name_plural = "স্লাইডারসমূহ"
+        ordering = ['order', '-created_at']
+    
+    def __str__(self):
+        return self.title
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        if self.image:
+            # Open image
+            img = Image.open(self.image.path)
+            
+            # Set desired dimensions for slider (16:9 aspect ratio)
+            output_size = (1920, 1080)  # Full HD resolution
+            
+            # Calculate crop dimensions to maintain aspect ratio
+            img_width, img_height = img.size
+            target_ratio = output_size[0] / output_size[1]  # 16:9 = 1.777
+            img_ratio = img_width / img_height
+            
+            if img_ratio > target_ratio:
+                # Image is wider, crop width
+                new_width = int(img_height * target_ratio)
+                left = (img_width - new_width) // 2
+                top = 0
+                right = left + new_width
+                bottom = img_height
+            else:
+                # Image is taller, crop height
+                new_height = int(img_width / target_ratio)
+                left = 0
+                top = (img_height - new_height) // 2
+                right = img_width
+                bottom = top + new_height
+            
+            # Crop and resize
+            img = img.crop((left, top, right, bottom))
+            img = img.resize(output_size, Image.Resampling.LANCZOS)
+            
+            # Save the processed image
+            img.save(self.image.path, quality=85, optimize=True)
+
+# Site Settings Model
+class SiteSettings(models.Model):
+    site_title = models.CharField(max_length=200, default="দুর্গা মন্দির", verbose_name="সাইটের নাম")
+    site_tagline = models.CharField(max_length=200, blank=True, verbose_name="সাইটের স্লোগান")
+    site_description = models.TextField(blank=True, verbose_name="সাইটের বিবরণ")
+    logo = models.ImageField(upload_to='settings/', blank=True, null=True, verbose_name="লোগো")
+    favicon = models.ImageField(upload_to='settings/', blank=True, null=True, verbose_name="ফ্যাভিকন")
+    contact_email = models.EmailField(blank=True, verbose_name="যোগাযোগের ইমেইল")
+    contact_phone = models.CharField(max_length=20, blank=True, verbose_name="যোগাযোগের ফোন")
+    address = models.TextField(blank=True, verbose_name="ঠিকানা")
+    facebook_url = models.URLField(blank=True, verbose_name="ফেসবুক পাতা")
+    youtube_url = models.URLField(blank=True, verbose_name="ইউটিউব চ্যানেল")
+    footer_text = models.TextField(blank=True, verbose_name="ফুটার টেক্সট")
+    
+    class Meta:
+        verbose_name = "সাইট সেটিংস"
+        verbose_name_plural = "সাইট সেটিংস"
+    
+    def __str__(self):
+        return self.site_title
+
+class CommitteeMember(models.Model):
+    name = models.CharField(max_length=100, verbose_name="নাম")
+    position = models.CharField(max_length=100, verbose_name="পদবী")
+    image = models.ImageField(upload_to='committee/', verbose_name="ছবি")
+    phone = models.CharField(max_length=20, blank=True, verbose_name="মোবাইল নাম্বার")
+    order = models.PositiveIntegerField(default=0, verbose_name="ক্রম")
+    is_active = models.BooleanField(default=True, verbose_name="সক্রিয়")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="যোগ করার তারিখ")
+    
+    class Meta:
+        verbose_name = "কমিটির সদস্য"
+        verbose_name_plural = "কমিটির সদস্যবর্গ"
+        ordering = ['order', 'name']
+    
+    def __str__(self):
+        return f"{self.name} - {self.position}"
+
+
+class DurgaSangha(models.Model):
+    name = models.CharField(max_length=100, verbose_name="নাম")
+    position = models.CharField(max_length=100, verbose_name="পদবী")
+    image = models.ImageField(upload_to='durga_sangha/', verbose_name="ছবি")
+    phone = models.CharField(max_length=20, blank=True, verbose_name="মোবাইল নাম্বার")
+    description = models.TextField(blank=True, null=True, verbose_name="বিবরণ")
+    order = models.PositiveIntegerField(default=0, verbose_name="ক্রম")
+    is_active = models.BooleanField(default=True, verbose_name="সক্রিয়")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="যোগ করার তারিখ")
+    
+    class Meta:
+        verbose_name = "দুর্গা সংঘের সদস্য"
+        verbose_name_plural = "দুর্গা সংঘের সদস্যবর্গ"
+        ordering = ['order', 'name']
+    
+    def __str__(self):
+        return f"{self.name} - {self.position}"

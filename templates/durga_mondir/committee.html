@@ -1,0 +1,374 @@
+{% extends 'durga_mondir/base.html' %}
+{% load static %}
+
+{% block title %}কমিটি - {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Background pattern for all pages */
+    body {
+        background-image: url('{% static "images/bg.jpg" %}');
+        background-repeat: repeat;
+        background-size: 200px 200px;
+        background-attachment: fixed;
+        overflow-x: hidden;
+    }
+    
+    /* Sections with pattern overlay */
+    .pattern-section {
+        background-image: url('{% static "images/bg.jpg" %}');
+        background-repeat: repeat;
+        background-size: 180px 180px;
+        background-position: center;
+        position: relative;
+    }
+    
+    .pattern-section .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Text readability improvements */
+    .card {
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .section-title {
+        color: #2c3e50;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        font-weight: 600;
+    }
+
+    .committee-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 4rem 0 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .member-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        margin-bottom: 2rem;
+        border: none;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .member-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    
+    .member-photo {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+    }
+    
+    .member-photo img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+        display: block;
+        margin: auto;
+    }
+    
+    /* Fallback for all image types */
+    .member-photo img {
+        object-position: center;
+    }
+    
+    .member-card:hover .member-photo img {
+        transform: scale(1.02);
+    }
+    
+    /* Aspect ratio handling for different image sizes */
+    .member-photo.portrait img {
+        height: 100%;
+        width: auto;
+    }
+    
+    .member-photo.landscape img {
+        width: 100%;
+        height: auto;
+    }
+    
+    .member-photo.square img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    
+    .member-info {
+        padding: 1.5rem;
+        text-align: center;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .member-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+    
+    .member-position {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+    
+    .member-contact {
+        font-size: 0.85rem;
+        color: #6c757d;
+        line-height: 1.6;
+    }
+    
+    .member-contact i {
+        width: 16px;
+        text-align: center;
+        margin-right: 8px;
+        color: #667eea;
+    }
+    
+
+    
+    .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+        font-weight: 600;
+        color: #2c3e50;
+        position: relative;
+    }
+    
+    .section-title:after {
+        content: '';
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        display: block;
+        margin: 1rem auto;
+        border-radius: 2px;
+    }
+    
+    .committee-stats {
+        background: rgba(255,255,255,0.95);
+        padding: 2rem;
+        border-radius: 15px;
+        margin-top: -50px;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #667eea;
+        display: block;
+    }
+    
+    .stat-label {
+        color: #6c757d;
+        font-weight: 500;
+        margin-top: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Committee Header -->
+<section class="committee-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">কার্যনির্বাহী কমিটি</h1>
+                <!-- <p class="lead">আমাদের সংস্থার কার্যনির্বাহী কমিটির সম্মানিত সদস্যবর্গ</p> -->
+            </div>
+        </div>
+        
+        <!-- Committee Stats -->
+        <!-- <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="committee-stats">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <span class="stat-number">{{ members|length }}</span>
+                                <div class="stat-label">মোট সদস্য</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <span class="stat-number">{{ members|length|add:-5 }}</span>
+                                <div class="stat-label">সাধারণ সদস্য</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <span class="stat-number">৫</span>
+                                <div class="stat-label">পদাধিকারী</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</section>
+
+<!-- Committee Members -->
+<section class="py-5">
+    <div class="container">
+        {% if members %}
+            <h2 class="section-title">কমিটির সদস্যবর্গ</h2>
+            
+            <div class="row">
+                {% for member in members %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="member-card">
+                            <div class="member-photo" id="photo-{{ member.id }}">
+                                {% if member.image %}
+                                    <img src="{{ member.image.url }}" alt="{{ member.name }}" onload="adjustImageFit(this)">
+                                {% else %}
+                                    <div class="d-flex align-items-center justify-content-center bg-light h-100">
+                                        <i class="fas fa-user fa-4x text-muted"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="member-info">
+                                <div>
+                                    <h5 class="member-name">{{ member.name }}</h5>
+                                    <div class="member-position">{{ member.position }}</div>
+                                </div>
+                                
+                                {% if member.phone %}
+                                    <div class="member-contact">
+                                        <i class="fas fa-phone"></i>
+                                        {{ member.phone }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-users fa-4x text-muted mb-4"></i>
+                <h3>কমিটির তথ্য আসছে শীঘ্রই</h3>
+                <p class="text-muted">কমিটির সদস্যদের তথ্য শীঘ্রই আপডেট করা হবে।</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Contact Committee -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h3 class="mb-3">কমিটির সাথে যোগাযোগ</h3>
+                <p class="text-muted mb-4">
+                    কোন প্রশ্ন, পরামর্শ বা সহযোগিতার জন্য আমাদের কমিটির সাথে যোগাযোগ করুন।
+                </p>
+                <a href="{% url 'durga:contact' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-envelope me-2"></i>যোগাযোগ করুন
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function adjustImageFit(img) {
+    const container = img.parentElement;
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+    
+    // Wait for image to load completely
+    if (img.complete) {
+        const imgWidth = img.naturalWidth;
+        const imgHeight = img.naturalHeight;
+        const aspectRatio = imgWidth / imgHeight;
+        const containerRatio = containerWidth / containerHeight;
+        
+        // Remove existing classes
+        container.classList.remove('portrait', 'landscape', 'square');
+        
+        if (aspectRatio > containerRatio) {
+            // Image is wider - fit by height
+            container.classList.add('landscape');
+            img.style.width = 'auto';
+            img.style.height = '100%';
+        } else if (aspectRatio < containerRatio) {
+            // Image is taller - fit by width  
+            container.classList.add('portrait');
+            img.style.width = '100%';
+            img.style.height = 'auto';
+        } else {
+            // Square or similar ratio
+            container.classList.add('square');
+            img.style.width = '100%';
+            img.style.height = '100%';
+        }
+    } else {
+        // If not loaded yet, wait and try again
+        img.addEventListener('load', function() {
+            adjustImageFit(this);
+        });
+    }
+}
+
+// Adjust all images on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.member-photo img');
+    images.forEach(function(img) {
+        if (img.complete) {
+            adjustImageFit(img);
+        } else {
+            img.addEventListener('load', function() {
+                adjustImageFit(this);
+            });
+        }
+    });
+});
+
+// Re-adjust on window resize
+window.addEventListener('resize', function() {
+    const images = document.querySelectorAll('.member-photo img');
+    images.forEach(function(img) {
+        adjustImageFit(img);
+    });
+});
+</script>
+
+{% endblock %}
