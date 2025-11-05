@@ -87,6 +87,28 @@ class SliderAdmin(admin.ModelAdmin):
 
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('সাইটের মূল তথ্য', {
+            'fields': ('site_title', 'site_tagline', 'site_description')
+        }),
+        ('লোগো ও ছবি', {
+            'fields': ('logo', 'favicon')
+        }),
+        ('যোগাযোগের তথ্য', {
+            'fields': ('contact_email', 'contact_phone', 'address')
+        }),
+        ('সামাজিক মাধ্যম', {
+            'fields': ('facebook_url', 'youtube_url')
+        }),
+        ('গুগল ম্যাপ', {
+            'fields': ('google_map_url',),
+            'description': 'গুগল ম্যাপের সম্পূর্ণ iframe embed কোড এখানে পেস্ট করুন। Google Maps > Share > Embed a map থেকে কোড কপি করুন।'
+        }),
+        ('ফুটার', {
+            'fields': ('footer_text',)
+        })
+    )
+    
     def has_add_permission(self, request):
         # Only allow one instance
         return not SiteSettings.objects.exists()

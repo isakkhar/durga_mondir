@@ -216,6 +216,8 @@ class SiteSettings(models.Model):
     address = models.TextField(blank=True, verbose_name="ঠিকানা")
     facebook_url = models.URLField(blank=True, verbose_name="ফেসবুক পাতা")
     youtube_url = models.URLField(blank=True, verbose_name="ইউটিউব চ্যানেল")
+    google_map_url = models.TextField(blank=True, verbose_name="গুগল ম্যাপ এম্বেড URL", 
+                                      help_text="গুগল ম্যাপের এম্বেড কোড এখানে পেস্ট করুন")
     footer_text = models.TextField(blank=True, verbose_name="ফুটার টেক্সট")
     
     class Meta:
