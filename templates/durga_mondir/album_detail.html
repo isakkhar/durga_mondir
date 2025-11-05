@@ -145,7 +145,7 @@
 <div class="container py-5">
     <!-- Back Button -->
     <div class="back-btn">
-        <a href="{% url 'durga:gallery' %}" class="btn btn-outline-secondary">
+        <a href="{% url 'durga:gallery' %}" class="btn btn-info">
             <i class="fas fa-arrow-left me-2"></i>গ্যালারিতে ফিরে যান
         </a>
     </div>
@@ -160,9 +160,9 @@
             <div class="d-flex align-items-center text-muted">
                 <i class="fas fa-images me-2"></i>
                 <span id="photos-count">{{ album.get_photos_count }}</span> টি ছবি
-                <span class="mx-2">•</span>
-                <i class="fas fa-calendar-alt me-2"></i>
-                {{ album.created_at|date:"d F Y" }}
+                <!-- <span class="mx-2">•</span> -->
+                <!-- <i class="fas fa-calendar-alt me-2"></i> -->
+                <!-- {{ album.created_at|date:"d F Y" }} -->
             </div>
         </div>
     </div>

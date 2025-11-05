@@ -262,3 +262,72 @@ class DurgaSangha(models.Model):
     
     def __str__(self):
         return f"{self.name} - {self.position}"
+
+
+class DurgaPujaCountdown(models.Model):
+    title = models.CharField(max_length=200, default="দুর্গা পূজা", verbose_name="অনুষ্ঠানের নাম")
+    target_date = models.DateTimeField(verbose_name="লক্ষ্য তারিখ")
+    background_image = models.ImageField(upload_to='countdown/', blank=True, null=True, verbose_name="ব্যাকগ্রাউন্ড ছবি")
+    is_active = models.BooleanField(default=True, verbose_name="সক্রিয়")
+    message_before = models.CharField(max_length=100, default="মা আসছে", verbose_name="পূর্বের বার্তা")
+    message_after = models.CharField(max_length=100, default="দিন পরে", verbose_name="পরের বার্তা")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="তৈরির তারিখ")
+    
+    class Meta:
+        verbose_name = "দুর্গা পূজা কাউন্টডাউন"
+        verbose_name_plural = "দুর্গা পূজা কাউন্টডাউনসমূহ"
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.title} - {self.target_date.strftime('%d/%m/%Y')}"
+    
+    def days_remaining(self):
+        from datetime import datetime
+        now = timezone.now()
+        if self.target_date > now:
+            diff = self.target_date - now
+            return diff.days
+        else:
+            return 0
+    
+    def is_countdown_active(self):
+        return self.is_active and self.days_remaining() > 0
+
+
+class PujaDay(models.Model):
+    title = models.CharField(max_length=100, verbose_name="পূজার দিনের নাম")
+    date = models.DateField(verbose_name="তারিখ")
+    image = models.ImageField(upload_to='puja_days/', verbose_name="ছবি")
+    description = models.TextField(blank=True, verbose_name="বিবরণ")
+    is_active = models.BooleanField(default=True, verbose_name="সক্রিয়")
+    order = models.PositiveIntegerField(default=0, verbose_name="ক্রম")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="তৈরির তারিখ")
+    
+    class Meta:
+        verbose_name = "পূজার দিন"
+        verbose_name_plural = "পূজার দিনসমূহ"
+        ordering = ['order', 'date']
+    
+    def __str__(self):
+        return f"{self.title} - {self.date.strftime('%d %B')}"
+    
+    def get_formatted_date(self):
+        months = {
+            1: 'জানুয়ারি', 2: 'ফেব্রুয়ারি', 3: 'মার্চ', 4: 'এপ্রিল',
+            5: 'মে', 6: 'জুন', 7: 'জুলাই', 8: 'আগস্ট',
+            9: 'সেপ্টেম্বর', 10: 'অক্টোবর', 11: 'নভেম্বর', 12: 'ডিসেম্বর'
+        }
+        return f"{self.date.day:02d} {months[self.date.month]}"
+    
+    def get_formatted_date_with_day(self):
+        months = {
+            1: 'জানুয়ারি', 2: 'ফেব্রুয়ারি', 3: 'মার্চ', 4: 'এপ্রিল',
+            5: 'মে', 6: 'জুন', 7: 'জুলাই', 8: 'আগস্ট',
+            9: 'সেপ্টেম্বর', 10: 'অক্টোবর', 11: 'নভেম্বর', 12: 'ডিসেম্বর'
+        }
+        days = {
+            0: 'সোমবার', 1: 'মঙ্গলবার', 2: 'বুধবার', 3: 'বৃহস্পতিবার',
+            4: 'শুক্রবার', 5: 'শনিবার', 6: 'রবিবার'
+        }
+        day_name = days[self.date.weekday()]
+        return f"{day_name} | {self.date.day:02d} {months[self.date.month]}"

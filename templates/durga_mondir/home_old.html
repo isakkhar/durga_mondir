@@ -1,0 +1,331 @@
+{% extends 'durga_mondir/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* Home page specific background */
+    body.home-page {
+        background-image: url('{% static "images/bg.jpg" %}');
+        background-repeat: repeat;
+        background-size: 200px 200px;
+        background-attachment: fixed;
+        overflow-x: hidden; /* Prevent horizontal scrollbar */
+    }
+    
+    /* Sections with subtle pattern overlay */
+    .pattern-section {
+        background-image: url('{% static "images/bg.jpg" %}');
+        background-repeat: repeat;
+        background-size: 180px 180px;
+        background-position: center;
+        position: relative;
+    }
+    
+    .pattern-section .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Direct pattern without white overlay */
+    .pattern-direct {
+        background-image: url('{% static "images/bg.jpg" %}');
+        background-repeat: repeat;
+        background-size: 180px 180px;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    
+    /* Text readability improvements */
+    .pattern-direct .card {
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .pattern-direct .section-title {
+        color: #2c3e50;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        font-weight: 600;
+    }
+    
+    .pattern-direct .lead,
+    .pattern-direct p {
+        color: #34495e;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+    
+    /* Spinning Mandala Animation - Digital Durga Style */
+    .mandala-spinner {
+        position: relative;
+        display: inline-block;
+        margin-right: -100px; /* Controlled overlap to prevent scrollbar */
+        margin-left: 0;
+        overflow: visible;
+        flex-shrink: 0;
+        max-width: 200px; /* Constrain maximum width */
+    }
+    
+    /* Tight spacing for events section */
+    .events-header {
+        gap: 0.5rem;
+    }
+    
+    .spinning-mandala {
+        width: 200px;
+        height: 200px;
+        animation: slowSpin 15s linear infinite;
+        transition: none;
+    }
+    
+    @keyframes slowSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* Remove hover effects - keep consistent speed */
+    .spinning-mandala:hover {
+        animation-duration: 15s; /* Same speed on hover */
+        transform: none; /* No scale effect */
+    }
+    
+    /* Responsive mandala */
+    @media (max-width: 768px) {
+        .spinning-mandala {
+            width: 90px;
+            height: 90px;
+        }
+        .mandala-spinner {
+            margin-right: -40px; /* Reduced to prevent scrollbar */
+            max-width: 90px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .spinning-mandala {
+            width: 70px;
+            height: 70px;
+        }
+        .mandala-spinner {
+            margin-right: -30px; /* Reduced to prevent scrollbar */
+            max-width: 70px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body_class %}home-page{% endblock %}
+
+{% block content %}
+<!-- Slider Section -->
+{% if slider_items %}
+<section class="slider-section">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="hover">
+        <div class="carousel-indicators">
+            {% for slide in slider_items %}
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ forloop.counter0 }}" 
+                        class="{% if forloop.first %}active{% endif %}" 
+                        aria-current="{% if forloop.first %}true{% endif %}" 
+                        aria-label="Slide {{ forloop.counter }}"></button>
+            {% endfor %}
+        </div>
+        
+        <div class="carousel-inner">
+            {% for slide in slider_items %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    {% if slide.image and slide.image.url %}
+                        <!-- Image Background Container -->
+                        <div class="carousel-item-container">
+                            <img src="{{ slide.image.url }}" alt="{{ slide.title }}">
+                        </div>
+                        <div class="carousel-caption-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="z-index: 2;">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="carousel-content text-white">
+                                            <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInUp">{{ slide.title }}</h1>
+                                            
+                                            {% if slide.subtitle %}
+                                                <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">{{ slide.subtitle }}</p>
+                                            {% endif %}
+                                            
+                                            {% if slide.description %}
+                                                <p class="mb-4 animate__animated animate__fadeInUp animate__delay-2s">{{ slide.description }}</p>
+                                            {% endif %}
+                                            
+                                            {% if slide.button_text and slide.button_link %}
+                                                <div class="animate__animated animate__fadeInUp animate__delay-3s">
+                                                    <a href="{{ slide.button_link }}" class="btn btn-light btn-lg me-3">{{ slide.button_text }}</a>
+                                                    <a href="{% url 'durga:contact' %}" class="btn btn-outline-light btn-lg">যোগাযোগ</a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Gradient Background when no image -->
+                        <div class="carousel-bg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <div class="container">
+                                <div class="row align-items-center" style="min-height: 70vh;">
+                                    <div class="col-lg-8">
+                                        <div class="carousel-content text-white">
+                                            <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInUp">{{ slide.title }}</h1>
+                                            
+                                            {% if slide.subtitle %}
+                                                <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">{{ slide.subtitle }}</p>
+                                            {% endif %}
+                                            
+                                            {% if slide.description %}
+                                                <p class="mb-4 animate__animated animate__fadeInUp animate__delay-2s">{{ slide.description }}</p>
+                                            {% endif %}
+                                            
+                                            {% if slide.button_text and slide.button_link %}
+                                                <div class="animate__animated animate__fadeInUp animate__delay-3s">
+                                                    <a href="{{ slide.button_link }}" class="btn btn-light btn-lg me-3">{{ slide.button_text }}</a>
+                                                    <a href="{% url 'durga:contact' %}" class="btn btn-outline-light btn-lg">যোগাযোগ</a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Navigation Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" onclick="window.prevSlide && window.prevSlide()">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">পূর্ববর্তী</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" onclick="window.nextSlide && window.nextSlide()">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">পরবর্তী</span>
+        </button>
+    </div>
+</section>
+{% else %}
+<!-- Default Hero Section if no slider items -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-4">
+                    {% if site_settings %}{{ site_settings.site_title }}{% else %}দুর্গা মন্দির{% endif %}
+                </h1>
+                {% if site_settings and site_settings.site_tagline %}
+                    <p class="lead mb-4">{{ site_settings.site_tagline }}</p>
+                {% endif %}
+                
+                <div class="mb-4">
+                    <p class="h5">ওঁ অজ্ঞান-তিমিরান্দ্বস্য জ্ঞানাঞ্জনশলাকায়া</p>
+                    <p class="h5">চক্ষুরুন্মীলিতং যেন তস্মৈ শ্রীগুরবে নমঃ</p>
+                </div>
+                
+                <a href="{% url 'durga:events' %}" class="btn btn-light btn-lg me-3">অনুষ্ঠান</a>
+                <a href="{% url 'durga:contact' %}" class="btn btn-outline-light btn-lg">যোগাযোগ</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+
+<!-- Upcoming Events Section -->
+{% if upcoming_events %}
+<section class="py-5 pattern-direct" style="overflow-x: hidden; overflow-y: visible;">
+    <div class="container" style="overflow: visible; position: relative;">
+        <div class="d-flex align-items-center justify-content-between mb-4" style="overflow: visible; position: relative;">
+            <h2 class="section-title mb-0">আসন্ন অনুষ্ঠান</h2>
+            <!-- Spinning Mandala Image -->
+            <div class="mandala-spinner">
+                <img src="{% static 'images/circle-blue.png' %}" alt="Mandala" class="spinning-mandala">
+            </div>
+        </div>
+        <div class="row">
+            {% for event in upcoming_events %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    {% if event.featured_image %}
+                        <img src="{{ event.featured_image.url }}" class="card-img-top" alt="{{ event.title }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        <p class="card-text">{{ event.description|truncatewords:15 }}</p>
+                        <p class="text-muted">
+                            <i class="fas fa-calendar-alt me-2"></i>{{ event.date_time|date:"d F Y, g:i A" }}
+                        </p>
+                        <p class="text-muted">
+                            <i class="fas fa-map-marker-alt me-2"></i>{{ event.location }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{% url 'durga:events' %}" class="btn btn-primary">সব অনুষ্ঠান দেখুন</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+
+<!-- Gallery Preview Section -->
+{% if featured_gallery %}
+<section class="py-5 pattern-direct">
+    <div class="container">
+        <h2 class="section-title text-center">গ্যালারি</h2>
+        <div class="row">
+            {% for item in featured_gallery %}
+            <div class="col-lg-2 col-md-4 col-6 mb-3">
+                <div class="card">
+                    {% if item.gallery_type == 'photo' and item.image %}
+                        <img src="{{ item.image.url }}" class="card-img" alt="{{ item.title }}" style="height: 120px; object-fit: cover;">
+                    {% elif item.gallery_type == 'video' %}
+                        <div class="card-img d-flex align-items-center justify-content-center bg-dark text-white" style="height: 120px;">
+                            <i class="fas fa-play-circle fa-2x"></i>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{% url 'durga:gallery' %}" class="btn btn-primary">সম্পূর্ণ গ্যালারি দেখুন</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Introduction/About Section -->
+<section class="py-5 pattern-direct">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h2 class="section-title">ভূমিকা</h2>
+                <div class="lead">
+                    <p>যিনি জ্ঞানাঞ্জনশলাকায় অজ্ঞান-তিমিরাচ্ছন্ন অন্ধজনের চক্ষুরুন্মীলিত করিয়া দেন, সেই শ্রীগুরুর শ্রীপাদপদ্মে সাষ্টাঙ্গে প্রণিপাত করিতেছি।</p>
+                    
+                    <p>আপনাদের সকলকে স্বাগতম। এই ধাম/আশ্রমটি হইল এমন একটি আধ্যাত্মিক কেন্দ্র যেখানে যে কোনো ধর্মবিশ্বাসী বা একেবারেই বিশ্বাস নাই এমন মানুষও প্রতিফলিত হইতে, প্রশ্ন করিতে, আলোচনা শুনিতে, প্রার্থনা করিতে, হরিনাম করিতে / শুনিতে, ধ্যান, জ্ঞান এবং নিজেকে পরের সেবায় উৎসর্গ করিতে আসেন।</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="text-center">
+                    <!-- Placeholder for temple image -->
+                    <div class="bg-light rounded p-4" style="height: 300px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-place-of-worship fa-5x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

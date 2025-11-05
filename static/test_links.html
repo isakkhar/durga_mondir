@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Link Test</title>
+    <style>
+        .gallery-link {
+            display: inline-block;
+            color: #ff9a56;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border: 2px solid #ff9a56;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-link:hover {
+            background: #ff9a56;
+            color: white;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Link Test</h1>
+    <p>Testing gallery links:</p>
+    <a href="/album/5/" class="gallery-link" onclick="alert('Link clicked!'); return false;">Test Link (Album 5)</a>
+    <br><br>
+    <a href="/album/4/" class="gallery-link">Test Link (Album 4)</a>
+    <br><br>
+    <a href="/album/3/" class="gallery-link">Test Link (Album 3)</a>
+</body>
+</html>

@@ -41,7 +41,7 @@
     }
 
     .sangha-header {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        background: linear-gradient(135deg, #044570  0%, #044570 100%);
         color: white;
         padding: 4rem 0 2rem;
         margin-bottom: 3rem;
@@ -49,117 +49,109 @@
     
     .member-card {
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
-        overflow: hidden;
-        margin-bottom: 2rem;
+        overflow: visible;
+        margin-bottom: 1.5rem;
         border: none;
-        height: 100%;
+        text-align: center;
+        padding: 1.8rem;
+        aspect-ratio: 1;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
     }
     
     .member-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
     }
     
     .member-photo {
-        width: 100%;
+        width: 200px;
         height: 200px;
+        border-radius: 15px;
         overflow: hidden;
-        position: relative;
-        flex-shrink: 0;
+        margin: 0 auto 1rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f8f9fa;
+        /* border: 4px solid #044570; */
+        flex-shrink: 0;
+        box-shadow: 0 4px 15px rgba(4, 69, 112, 0.2);
     }
     
     .member-photo img {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        transition: transform 0.3s ease;
-        display: block;
-        margin: auto;
-    }
-    
-    /* Fallback for all image types */
-    .member-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         object-position: center;
+        transition: transform 0.3s ease;
+        border-radius: 10px;
     }
     
     .member-card:hover .member-photo img {
-        transform: scale(1.02);
+        transform: scale(1.05);
     }
     
-    /* Aspect ratio handling for different image sizes */
-    .member-photo.portrait img {
-        height: 100%;
-        width: auto;
-    }
-    
-    .member-photo.landscape img {
-        width: 100%;
-        height: auto;
-    }
-    
-    .member-photo.square img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
+    .member-photo .fas {
+        font-size: 3rem;
+        color: #044570;
+        opacity: 0.6;
     }
     
     .member-info {
-        padding: 1.5rem;
-        text-align: center;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        align-items: center;
     }
     
     .member-name {
-        font-size: 1.2rem;
-        font-weight: 600;
+        font-size: 1.1rem;
+        font-weight: 700;
         color: #2c3e50;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
+        line-height: 1.2;
+        text-align: center;
     }
     
     .member-position {
-        background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        background: linear-gradient(45deg, #044570, #0056b3);
         color: white;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 500;
+        padding: 0.25rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        font-weight: 600;
         display: inline-block;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     
     .member-description {
-        font-size: 0.9rem;
-        color: #666;
-        line-height: 1.6;
-        margin-bottom: 1rem;
-        text-align: left;
+        display: none; /* Hide description to keep cards compact */
     }
     
     .member-contact {
-        font-size: 0.85rem;
+        font-size: 0.7rem;
         color: #6c757d;
-        line-height: 1.6;
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .member-contact i {
-        width: 16px;
+        width: 12px;
         text-align: center;
-        margin-right: 8px;
-        color: #ff6b6b;
+        margin-right: 4px;
+        color: #044570;
+        font-size: 0.7rem;
     }
 
     .section-title {
@@ -174,7 +166,7 @@
         content: '';
         width: 60px;
         height: 3px;
-        background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        background: linear-gradient(45deg, #044570, #044570);
         display: block;
         margin: 1rem auto;
         border-radius: 2px;
@@ -230,27 +222,23 @@
             
             <div class="row">
                 {% for member in members %}
-                    <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
                         <div class="member-card">
-                            <div class="member-photo" id="photo-{{ member.id }}">
+                            <div class="member-photo">
                                 {% if member.image %}
-                                    <img src="{{ member.image.url }}" alt="{{ member.name }}" onload="adjustImageFit(this)">
+                                    <img src="{{ member.image.url }}" alt="{{ member.name }}">
                                 {% else %}
-                                    <div class="d-flex align-items-center justify-content-center bg-light h-100">
-                                        <i class="fas fa-user fa-4x text-muted"></i>
-                                    </div>
+                                    <i class="fas fa-user"></i>
                                 {% endif %}
                             </div>
                             
                             <div class="member-info">
-                                <div>
-                                    <h5 class="member-name">{{ member.name }}</h5>
-                                    <div class="member-position">{{ member.position }}</div>
-                                    
-                                    {% if member.description %}
-                                        <div class="member-description">{{ member.description|linebreaks }}</div>
-                                    {% endif %}
-                                </div>
+                                <h5 class="member-name">{{ member.name }}</h5>
+                                <div class="member-position">{{ member.position }}</div>
+                                
+                                {% if member.description %}
+                                    <div class="member-description">{{ member.description|linebreaks }}</div>
+                                {% endif %}
                                 
                                 {% if member.phone %}
                                     <div class="member-contact">
@@ -290,67 +278,6 @@
     </div>
 </section>
 
-<script>
-function adjustImageFit(img) {
-    const container = img.parentElement;
-    const containerWidth = container.offsetWidth;
-    const containerHeight = container.offsetHeight;
-    
-    // Wait for image to load completely
-    if (img.complete) {
-        const imgWidth = img.naturalWidth;
-        const imgHeight = img.naturalHeight;
-        const aspectRatio = imgWidth / imgHeight;
-        const containerRatio = containerWidth / containerHeight;
-        
-        // Remove existing classes
-        container.classList.remove('portrait', 'landscape', 'square');
-        
-        if (aspectRatio > containerRatio) {
-            // Image is wider - fit by height
-            container.classList.add('landscape');
-            img.style.width = 'auto';
-            img.style.height = '100%';
-        } else if (aspectRatio < containerRatio) {
-            // Image is taller - fit by width  
-            container.classList.add('portrait');
-            img.style.width = '100%';
-            img.style.height = 'auto';
-        } else {
-            // Square or similar ratio
-            container.classList.add('square');
-            img.style.width = '100%';
-            img.style.height = '100%';
-        }
-    } else {
-        // If not loaded yet, wait and try again
-        img.addEventListener('load', function() {
-            adjustImageFit(this);
-        });
-    }
-}
 
-// Adjust all images on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const images = document.querySelectorAll('.member-photo img');
-    images.forEach(function(img) {
-        if (img.complete) {
-            adjustImageFit(img);
-        } else {
-            img.addEventListener('load', function() {
-                adjustImageFit(this);
-            });
-        }
-    });
-});
-
-// Re-adjust on window resize
-window.addEventListener('resize', function() {
-    const images = document.querySelectorAll('.member-photo img');
-    images.forEach(function(img) {
-        adjustImageFit(img);
-    });
-});
-</script>
 
 {% endblock %}

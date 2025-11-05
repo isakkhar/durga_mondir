@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Page, Event, Gallery, Contact, SiteSettings, Slider, 
-    GalleryAlbum, GalleryPhoto, CommitteeMember, DurgaSangha
+    GalleryAlbum, GalleryPhoto, CommitteeMember, DurgaSangha, DurgaPujaCountdown, PujaDay
 )
 
 @admin.register(Page)
@@ -156,3 +156,52 @@ class DurgaSanghaAdmin(admin.ModelAdmin):
             'fields': ('order', 'is_active')
         }),
     )
+
+
+@admin.register(DurgaPujaCountdown)
+class DurgaPujaCountdownAdmin(admin.ModelAdmin):
+    list_display = ('title', 'target_date', 'days_remaining', 'is_active')
+    list_filter = ('is_active', 'target_date')
+    search_fields = ('title', 'message_before', 'message_after')
+    list_editable = ('is_active',)
+    
+    fieldsets = (
+        ('মূল তথ্য', {
+            'fields': ('title', 'target_date', 'background_image')
+        }),
+        ('বার্তা', {
+            'fields': ('message_before', 'message_after')
+        }),
+        ('সেটিংস', {
+            'fields': ('is_active',)
+        })
+    )
+    
+    def days_remaining(self, obj):
+        return f"{obj.days_remaining()} দিন"
+    days_remaining.short_description = 'অবশিষ্ট দিন'
+
+
+@admin.register(PujaDay)
+class PujaDayAdmin(admin.ModelAdmin):
+    list_display = ('title', 'date', 'get_formatted_date', 'order', 'is_active')
+    list_filter = ('is_active', 'date')
+    search_fields = ('title', 'description')
+    list_editable = ('order', 'is_active')
+    ordering = ('order', 'date')
+    
+    fieldsets = (
+        ('মূল তথ্য', {
+            'fields': ('title', 'date', 'image')
+        }),
+        ('বিস্তারিত', {
+            'fields': ('description',)
+        }),
+        ('সেটিংস', {
+            'fields': ('order', 'is_active')
+        })
+    )
+    
+    def get_formatted_date(self, obj):
+        return obj.get_formatted_date()
+    get_formatted_date.short_description = 'বাংলা তারিখ'

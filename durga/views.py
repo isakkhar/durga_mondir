@@ -5,7 +5,7 @@ from django.http import JsonResponse
 import re
 from .models import (
     Page, Event, Gallery, Contact, SiteSettings, Slider,
-    GalleryAlbum, GalleryPhoto, CommitteeMember, DurgaSangha
+    GalleryAlbum, GalleryPhoto, CommitteeMember, DurgaSangha, DurgaPujaCountdown, PujaDay
 )
 
 def get_site_context():
@@ -32,10 +32,22 @@ def home(request):
     upcoming_events = Event.objects.filter(is_active=True).order_by('date_time')[:3]
     featured_gallery = Gallery.objects.filter(is_featured=True)[:6]
     
+    # Get active countdown
+    countdown = DurgaPujaCountdown.objects.filter(is_active=True).first()
+    
+    # Get gallery albums for showcase
+    featured_albums = GalleryAlbum.objects.filter(is_featured=True)[:4]
+    
+    # Get puja days
+    puja_days = PujaDay.objects.filter(is_active=True).order_by('order', 'date')[:6]
+    
     context.update({
         'slider_items': slider_items,
         'upcoming_events': upcoming_events,
         'featured_gallery': featured_gallery,
+        'countdown': countdown,
+        'featured_albums': featured_albums,
+        'puja_days': puja_days,
     })
     
     return render(request, 'durga_mondir/home.html', context)

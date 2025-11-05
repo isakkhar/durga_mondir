@@ -9,108 +9,839 @@
         background-repeat: repeat;
         background-size: 200px 200px;
         background-attachment: fixed;
-        overflow-x: hidden; /* Prevent horizontal scrollbar */
+        overflow-x: hidden;
     }
     
-    /* Sections with subtle pattern overlay */
-    .pattern-section {
-        background-image: url('{% static "images/bg.jpg" %}');
-        background-repeat: repeat;
-        background-size: 180px 180px;
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 14px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.1);
+        border-radius: 12px;
+        margin: 5px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #ff9a56 0%, #ff6b35 50%, #f7931e 100%);
+        border-radius: 12px;
+        border: 3px solid transparent;
+        background-clip: content-box;
+        transition: all 0.3s ease;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #ff8142 0%, #ff5722 50%, #e68900 100%);
+        transform: scale(1.1);
+    }
+    
+    ::-webkit-scrollbar-thumb:active {
+        background: linear-gradient(135deg, #e67e22 0%, #d35400 50%, #cc7a00 100%);
+    }
+    
+    /* Firefox scrollbar */
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: #ff9a56 rgba(0,0,0,0.1);
+        scroll-behavior: smooth;
+    }
+    
+    /* Scrollbar corner */
+    ::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+    
+    /* Smooth scrolling */
+    * {
+        scroll-behavior: smooth;
+    }
+    
+    /* Hero Section Carousel */
+    .hero-slide {
+        background-size: cover;
         background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
         position: relative;
+        display: flex;
+        align-items: center;
     }
     
-    .pattern-section .container {
+    .carousel-fade .carousel-item {
+        opacity: 0;
+        transition-property: opacity;
+        background: none;
+    }
+    
+    .carousel-fade .carousel-item.active {
+        opacity: 1;
+    }
+    
+    .hero-content {
         position: relative;
         z-index: 2;
     }
     
-    /* Direct pattern without white overlay */
-    .pattern-direct {
-        background-image: url('{% static "images/bg.jpg" %}');
-        background-repeat: repeat;
-        background-size: 180px 180px;
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        color: white;
+        text-shadow: 3px 3px 12px rgba(0,0,0,0.8), 1px 1px 8px rgba(0,0,0,0.9);
+        margin-bottom: 2rem;
+        animation: fadeInUp 1s ease-out;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+        color: rgba(255,255,255,0.95);
+        margin-bottom: 2rem;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        animation: fadeInUp 1s ease-out 0.2s both;
+    }
+    
+    .hero-description {
+        font-size: 1.1rem;
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 3rem;
+        line-height: 1.6;
+        text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
+        animation: fadeInUp 1s ease-out 0.3s both;
+    }
+    
+
+    
+    /* Hero Carousel specific styles */
+    #heroCarousel .carousel-indicators {
+        bottom: 20px;
+        z-index: 3;
+    }
+    
+    #heroCarousel .carousel-indicators [data-bs-target] {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: rgba(255,255,255,0.4);
+        border: 2px solid rgba(255,255,255,0.8);
+        margin: 0 8px;
+        opacity: 0.7;
+    }
+    
+    #heroCarousel .carousel-indicators .active {
+        background-color: rgba(255,255,255,0.9);
+        transform: scale(1.3);
+        opacity: 1;
+        box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    }
+    
+    #heroCarousel .carousel-control-prev,
+    #heroCarousel .carousel-control-next {
+        width: 50px;
+        height: 50px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        backdrop-filter: blur(10px);
+        opacity: 0.8;
+        z-index: 3;
+    }
+    
+    #heroCarousel .carousel-control-prev:hover,
+    #heroCarousel .carousel-control-next:hover {
+        opacity: 1;
+        background: rgba(255,255,255,0.3);
+        transform: translateY(-50%) scale(1.1);
+    }
+    
+    #heroCarousel .carousel-control-prev {
+        left: 20px;
+    }
+    
+    #heroCarousel .carousel-control-next {
+        right: 20px;
+    }
+    
+    /* Countdown Section */
+    .countdown-section {
+        background: linear-gradient(135deg, rgba(255, 107, 107, 0.9), rgba(238, 90, 36, 0.9)),
+                    url('{% static "images/durga_puja_1.png" %}');
+        background-size: cover;
         background-position: center;
         background-attachment: fixed;
-    }
-    
-    /* Text readability improvements */
-    .pattern-direct .card {
-        background-color: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(0, 0, 0, 0.1);
-    }
-    
-    .pattern-direct .section-title {
-        color: #2c3e50;
-        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-        font-weight: 600;
-    }
-    
-    .pattern-direct .lead,
-    .pattern-direct p {
-        color: #34495e;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-    }
-    
-    /* Spinning Mandala Animation - Digital Durga Style */
-    .mandala-spinner {
+        padding: 5rem 0;
+        color: white;
         position: relative;
-        display: inline-block;
-        margin-right: -100px; /* Controlled overlap to prevent scrollbar */
-        margin-left: 0;
-        overflow: visible;
-        flex-shrink: 0;
-        max-width: 200px; /* Constrain maximum width */
     }
     
-    /* Tight spacing for events section */
-    .events-header {
-        gap: 0.5rem;
+    .countdown-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 1;
     }
     
-    .spinning-mandala {
-        width: 200px;
+    .countdown-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+    }
+    
+    .countdown-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .countdown-timer {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        margin: 2rem auto;
+        max-width: 600px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .countdown-number {
+        font-size: 4rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, #fff, #f39c12);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+        text-shadow: none;
+        animation: pulse 2s infinite;
+    }
+    
+    .countdown-text {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Gallery Showcase */
+    .gallery-showcase {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        padding: 5rem 0;
+    }
+    
+    .gallery-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+    }
+    
+    .gallery-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .gallery-card img {
+        width: 100%;
         height: 200px;
-        animation: slowSpin 15s linear infinite;
-        transition: none;
+        object-fit: cover;
+        transition: transform 0.3s ease;
     }
     
-    @keyframes slowSpin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+    .gallery-card:hover img {
+        transform: scale(1.1);
     }
     
-    /* Remove hover effects - keep consistent speed */
-    .spinning-mandala:hover {
-        animation-duration: 15s; /* Same speed on hover */
-        transform: none; /* No scale effect */
+    /* Gallery Carousel Specific Styles */
+    /* Gallery 4-Column Carousel */
+    #galleryCarousel {
+        position: relative;
+        margin: 40px 0;
+        padding: 30px 0;
     }
     
-    /* Responsive mandala */
+    .gallery-card-4col {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+        cursor: pointer;
+        position: relative;
+        /* Clean card without shadows */
+        border: 1px solid rgba(0,0,0,0.08);
+    }
+    
+    .gallery-card-4col:hover {
+        transform: translateY(-5px);
+        /* Subtle lift effect without shadows */
+        border-color: rgba(255, 153, 86, 0.3);
+    }
+    
+    .gallery-card-empty {
+        border: 3px dashed rgba(255, 153, 86, 0.3);
+        background: rgba(255, 153, 86, 0.05);
+    }
+    
+    .gallery-image-container {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+        /* Enhanced image container for clarity */
+        background: #f8f9fa;
+    }
+    
+    .gallery-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+        /* Clear, sharp image display */
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        backface-visibility: hidden;
+    }
+    
+    .gallery-card-4col:hover .gallery-image {
+        transform: scale(1.05);
+        /* Reduced scale for cleaner look */
+    }
+    
+    .gallery-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        color: #6c757d;
+    }
+    
+    .gallery-overlay-4col {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 153, 86, 0.6) 0%, rgba(255, 107, 53, 0.6) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+        /* Light overlay to show original image better */
+    }
+    
+    .gallery-card-4col:hover .gallery-overlay-4col {
+        opacity: 0.9;
+        /* Reduced opacity to keep image visible */
+    }
+    
+    .gallery-content-4col {
+        text-align: center;
+        color: white;
+        padding: 20px;
+    }
+    
+    .gallery-title-4col {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    }
+    
+    .gallery-count-4col {
+        font-size: 1rem;
+        margin-bottom: 15px;
+        opacity: 0.9;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+    }
+    
+    .gallery-btn-4col {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: 2px solid white;
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .gallery-btn-4col:hover {
+        background: white;
+        color: #ff6b35;
+        transform: translateY(-2px);
+    }
+    
+    /* Gallery Card Info Section */
+    .gallery-card-info {
+        padding: 15px;
+        text-align: center;
+        background: white;
+        border-top: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .gallery-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        line-height: 1.3;
+    }
+    
+    .gallery-link {
+        display: inline-block;
+        color: #ff9a56;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        border: 2px solid #ff9a56;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .gallery-link:hover {
+        background: #ff9a56;
+        color: white;
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+    
+    /* Gallery 4-Column Carousel Indicators */
+    .gallery-carousel-indicators {
+        bottom: -20px;
+        position: static;
+        margin: 30px 0 0 0;
+        justify-content: center;
+    }
+    
+    .gallery-carousel-indicators [data-bs-target] {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: rgba(255, 153, 86, 0.4);
+        border: 2px solid rgba(255, 153, 86, 0.7);
+        margin: 0 6px;
+        opacity: 0.7;
+        transition: all 0.3s ease;
+    }
+    
+    .gallery-carousel-indicators [data-bs-target].active {
+        background-color: #ff9a56;
+        transform: scale(1.2);
+        opacity: 1;
+        box-shadow: 0 0 10px rgba(255, 153, 86, 0.5);
+    }
+    
+    /* Gallery 4-Column Carousel Controls */
+    .gallery-carousel-prev,
+    .gallery-carousel-next {
+        width: 50px;
+        height: 50px;
+        top: 45%;
+        transform: translateY(-50%);
+        background: rgba(255, 153, 86, 0.8);
+        border-radius: 50%;
+        opacity: 0.9;
+        transition: all 0.3s ease;
+        z-index: 5;
+    }
+    
+    .gallery-carousel-prev:hover,
+    .gallery-carousel-next:hover {
+        background: rgba(255, 107, 53, 0.9);
+        transform: translateY(-50%) scale(1.1);
+        opacity: 1;
+    }
+    
+    .gallery-carousel-prev {
+        left: -25px;
+    }
+    
+    .gallery-carousel-next {
+        right: -25px;
+    }
+    
+    /* Mobile Responsive for 4-Column Gallery */
     @media (max-width: 768px) {
-        .spinning-mandala {
-            width: 90px;
-            height: 90px;
+        .gallery-image-container {
+            height: 200px;
         }
-        .mandala-spinner {
-            margin-right: -40px; /* Reduced to prevent scrollbar */
-            max-width: 90px;
+        
+        .gallery-title-4col {
+            font-size: 1.2rem;
+        }
+        
+        .gallery-count-4col {
+            font-size: 0.9rem;
+        }
+        
+        .gallery-btn-4col {
+            font-size: 0.8rem;
+            padding: 6px 16px;
+        }
+        
+        .gallery-carousel-prev,
+        .gallery-carousel-next {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .gallery-carousel-prev {
+            left: -20px;
+        }
+        
+        .gallery-carousel-next {
+            right: -20px;
         }
     }
     
     @media (max-width: 576px) {
-        .spinning-mandala {
-            width: 70px;
-            height: 70px;
+        .gallery-image-container {
+            height: 180px;
         }
-        .mandala-spinner {
-            margin-right: -30px; /* Reduced to prevent scrollbar */
-            max-width: 70px;
+        
+        .gallery-title-4col {
+            font-size: 1rem;
         }
+        
+        .gallery-carousel-prev,
+        .gallery-carousel-next {
+            width: 35px;
+            height: 35px;
+        }
+        
+        .gallery-carousel-prev {
+            left: -15px;
+        }
+        
+        .gallery-carousel-next {
+            right: -15px;
+        }
+    }
+    
+    .gallery-indicators {
+        bottom: -50px !important;
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 10 !important;
+        margin: 0 !important;
+    }
+    
+    .gallery-indicators [data-bs-target] {
+        width: 14px !important;
+        height: 14px !important;
+        border-radius: 50% !important;
+        background-color: rgba(255, 153, 86, 0.5) !important;
+        border: 2px solid rgba(255, 153, 86, 0.8) !important;
+        margin: 0 8px !important;
+        opacity: 0.8 !important;
+    }
+    
+    .gallery-indicators .active {
+        background-color: #044570;
+        transform: scale(1.2);
+        opacity: 1;
+        box-shadow: 0 0 10px rgba(4, 69, 112, 0.5);
+    }
+    
+    .gallery-control-prev,
+    .gallery-control-next {
+        width: 50px !important;
+        height: 50px !important;
+        top: 45% !important;
+        transform: translateY(-50%) !important;
+        background: rgba(255, 153, 86, 0.8) !important;
+        border-radius: 50% !important;
+        opacity: 0.9 !important;
+        transition: all 0.3s ease !important;
+        z-index: 10 !important;
+    }
+    
+    .gallery-control-prev:hover,
+    .gallery-control-next:hover {
+        opacity: 1 !important;
+        background: rgba(255, 107, 53, 0.95) !important;
+        transform: translateY(-50%) scale(1.15) !important;
+    }
+    
+    .gallery-control-prev {
+        left: -30px;
+    }
+    
+    .gallery-control-next {
+        right: -30px;
+    }
+    
+    /* Gallery carousel responsive */
+    @media (max-width: 768px) {
+        .gallery-control-prev {
+            left: -15px;
+        }
+        
+        .gallery-control-next {
+            right: -15px;
+        }
+        
+        .gallery-indicators {
+            bottom: -30px;
+        }
+        
+        #galleryCarousel {
+            padding-bottom: 50px;
+        }
+    }
+    
+    /* Features Section */
+    .features-section {
+        background: linear-gradient(135deg, rgba(4, 69, 112, 0.05), rgba(4, 69, 112, 0.1));
+        padding: 5rem 0;
+    }
+    
+    .feature-card {
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+        border-top: 5px solid #044570;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #044570, #0056b3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        color: white;
+        font-size: 2rem;
+    }
+    
+    /* About Section with Durga Images */
+    .about-section {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95)),
+                    url('{% static "images/durga_puja_2.png" %}');
+        background-size: cover;
+        background-position: center;
+        padding: 5rem 0;
+    }
+    
+    .about-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    /* Statistics Section */
+    .stats-section {
+        background: linear-gradient(135deg, #044570, #0056b3);
+        color: white;
+        padding: 4rem 0;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, #fff, #f39c12);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stat-label {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+    
+    /* Puja Days Section */
+    .puja-days-section {
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(238, 90, 36, 0.1));
+        padding: 5rem 0;
+        position: relative;
+    }
+    
+    .puja-days-title {
+        text-align: center;
+        margin-bottom: 4rem;
+        color: #dc3545;
+        font-size: 3rem;
+        font-weight: 800;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .puja-day-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+        border: 3px solid transparent;
+        position: relative;
+    }
+    
+
+    
+    .puja-day-image {
+        width: 100%;
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .puja-day-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        background: #fff;
+    }
+    
+    .puja-day-content {
+        padding: 0.5rem 1rem 1rem 1rem;
+        text-align: center;
+    }
+    
+    .puja-day-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #dc3545;
+        margin-bottom: 0.3rem;
+    }
+    
+    .puja-day-date {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        text-align: center;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+    
+    .puja-day-description {
+        color: #666;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        margin-bottom: 0;
+    }
+    
+
+    
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+    }
+    
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+    
+    .animate-on-scroll.animated {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .countdown-title {
+            font-size: 2rem;
+        }
+        
+        .countdown-number {
+            font-size: 2.5rem;
+        }
+        
+        .countdown-timer {
+            padding: 2rem 1rem;
+        }
+        
+        #heroCarousel .carousel-control-prev {
+            left: 10px;
+        }
+        
+        #heroCarousel .carousel-control-next {
+            right: 10px;
+        }
+        
+        #heroCarousel .carousel-indicators {
+            bottom: 10px;
+        }
+    }
+    
+    /* Section Titles */
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #044570;
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
+    }
+    
+    .section-title::after {
+        content: '';
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, #044570, #0056b3);
+        display: block;
+        margin: 1rem auto;
+        border-radius: 2px;
     }
 </style>
 {% endblock %}
@@ -118,214 +849,725 @@
 {% block body_class %}home-page{% endblock %}
 
 {% block content %}
-<!-- Slider Section -->
+<!-- Hero Section Dynamic Carousel -->
 {% if slider_items %}
-<section class="slider-section">
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="hover">
-        <div class="carousel-indicators">
-            {% for slide in slider_items %}
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ forloop.counter0 }}" 
-                        class="{% if forloop.first %}active{% endif %}" 
-                        aria-current="{% if forloop.first %}true{% endif %}" 
-                        aria-label="Slide {{ forloop.counter }}"></button>
-            {% endfor %}
-        </div>
-        
-        <div class="carousel-inner">
-            {% for slide in slider_items %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    {% if slide.image and slide.image.url %}
-                        <!-- Image Background Container -->
-                        <div class="carousel-item-container">
-                            <img src="{{ slide.image.url }}" alt="{{ slide.title }}">
-                        </div>
-                        <div class="carousel-caption-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="z-index: 2;">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <div class="carousel-content text-white">
-                                            <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInUp">{{ slide.title }}</h1>
-                                            
-                                            {% if slide.subtitle %}
-                                                <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">{{ slide.subtitle }}</p>
-                                            {% endif %}
-                                            
-                                            {% if slide.description %}
-                                                <p class="mb-4 animate__animated animate__fadeInUp animate__delay-2s">{{ slide.description }}</p>
-                                            {% endif %}
-                                            
-                                            {% if slide.button_text and slide.button_link %}
-                                                <div class="animate__animated animate__fadeInUp animate__delay-3s">
-                                                    <a href="{{ slide.button_link }}" class="btn btn-light btn-lg me-3">{{ slide.button_text }}</a>
-                                                    <a href="{% url 'durga:contact' %}" class="btn btn-outline-light btn-lg">যোগাযোগ</a>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
+<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+    <div class="carousel-inner">
+        {% for slide in slider_items %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="hero-slide" style="background-image: url('{{ slide.image.url }}');">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <div class="hero-content">
+                                <h1 class="hero-title">{{ slide.title }}</h1>
+                                {% if slide.subtitle %}
+                                    <p class="hero-subtitle">{{ slide.subtitle }}</p>
+                                {% endif %}
+                                {% if slide.description %}
+                                    <p class="hero-description">{{ slide.description }}</p>
+                                {% endif %}
+                                <div class="hero-buttons">
+                                    {% if slide.button_text and slide.button_link %}
+                                        <!-- <a href="{{ slide.button_link }}" class="btn btn-light btn-lg me-3" style="box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                                            <i class="fas fa-arrow-right me-2"></i>{{ slide.button_text }}
+                                        </a> -->
+                                    {% endif %}
+                                    <a href="{% url 'durga:contact' %}" class="btn btn-success" >
+                                        <i class="fas fa-envelope me-2"></i>যোগাযোগ
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                    {% else %}
-                        <!-- Gradient Background when no image -->
-                        <div class="carousel-bg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <div class="container">
-                                <div class="row align-items-center" style="min-height: 70vh;">
-                                    <div class="col-lg-8">
-                                        <div class="carousel-content text-white">
-                                            <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInUp">{{ slide.title }}</h1>
-                                            
-                                            {% if slide.subtitle %}
-                                                <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">{{ slide.subtitle }}</p>
-                                            {% endif %}
-                                            
-                                            {% if slide.description %}
-                                                <p class="mb-4 animate__animated animate__fadeInUp animate__delay-2s">{{ slide.description }}</p>
-                                            {% endif %}
-                                            
-                                            {% if slide.button_text and slide.button_link %}
-                                                <div class="animate__animated animate__fadeInUp animate__delay-3s">
-                                                    <a href="{{ slide.button_link }}" class="btn btn-light btn-lg me-3">{{ slide.button_text }}</a>
-                                                    <a href="{% url 'durga:contact' %}" class="btn btn-outline-light btn-lg">যোগাযোগ</a>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
+                        <!-- <div class="col-lg-4 text-center">
+                            <img src="{% static 'images/1_Om.svg.webp' %}" alt="Om Symbol" class="img-fluid hero-symbol" style="max-width: 300px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));">
+                        </div> -->
+                    </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
-        
-        <!-- Navigation Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" onclick="window.prevSlide && window.prevSlide()">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">পূর্ববর্তী</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" onclick="window.nextSlide && window.nextSlide()">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">পরবর্তী</span>
-        </button>
+        {% endfor %}
+    </div>
+    
+    <!-- Carousel indicators -->
+    {% if slider_items|length > 1 %}
+    <div class="carousel-indicators">
+        {% for slide in slider_items %}
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Carousel controls -->
+    {% if slider_items|length > 1 %}
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    {% endif %}
+</div>
+
+{% else %}
+<!-- Fallback Hero Section if no slides -->
+<section class="hero-section">
+    <div class="hero-slide" style="background-image: url('{% static "images/Hindu_Banner_PNG_Image_004.png" %}');">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            {% if site_settings %}{{ site_settings.site_title }}{% else %}দুর্গা মন্দির{% endif %}
+                        </h1>
+                        <p class="hero-subtitle">
+                            {% if site_settings and site_settings.site_tagline %}
+                                {{ site_settings.site_tagline }}
+                            {% else %}
+                                মা দুর্গার কৃপায় আধ্যাত্মিক শান্তি ও উন্নতির পথে
+                            {% endif %}
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="{% url 'durga:events' %}" class="btn btn-light btn-lg me-3">
+                                <i class="fas fa-calendar-alt me-2"></i>অনুষ্ঠান
+                            </a>
+                            <a href="{% url 'durga:contact' %}" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-envelope me-2"></i>যোগাযোগ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <img src="{% static 'images/1_Om.svg.webp' %}" alt="Om Symbol" class="img-fluid" style="max-width: 300px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));">
+                </div>
+            </div>
+        </div>
     </div>
 </section>
-{% else %}
-<!-- Default Hero Section if no slider items -->
-<section class="hero-section">
+{% endif %}
+
+<!-- Countdown Section -->
+{% if countdown and countdown.is_countdown_active %}
+<section class="countdown-section">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h1 class="display-4 fw-bold mb-4">
-                    {% if site_settings %}{{ site_settings.site_title }}{% else %}দুর্গা মন্দির{% endif %}
-                </h1>
-                {% if site_settings and site_settings.site_tagline %}
-                    <p class="lead mb-4">{{ site_settings.site_tagline }}</p>
+        <div class="countdown-content">
+            <h2 class="countdown-title">{{ countdown.title }}</h2>
+            <div class="countdown-timer">
+                <p class="countdown-text">{{ countdown.message_before }}</p>
+                <span class="countdown-number" id="countdown-days">{{ countdown.days_remaining }}</span>
+                <p class="countdown-text">{{ countdown.message_after }}</p>
+            </div>
+            <p class="lead">{{ countdown.target_date|date:"d F Y" }} তারিখে</p>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Statistics Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item animate-on-scroll">
+                    <span class="stat-number" data-count="50">0</span>
+                    <div class="stat-label">বছরের ঐতিহ্য</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item animate-on-scroll">
+                    <span class="stat-number" data-count="1000">0</span>
+                    <div class="stat-label">ভক্ত পরিবার</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item animate-on-scroll">
+                    <span class="stat-number" data-count="365">0</span>
+                    <div class="stat-label">দিন সেবা</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item animate-on-scroll">
+                    <span class="stat-number" data-count="24">0</span>
+                    <div class="stat-label">ঘন্টা প্রার্থনা</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title animate-on-scroll">আমাদের সেবাসমূহ</h2>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-pray"></i>
+                    </div>
+                    <h4>নিয়মিত পূজা-অর্চনা</h4>
+                    <p>প্রতিদিন সকাল ও সন্ধ্যায় মা দুর্গার নিয়মিত আরতি ও পূজা অনুষ্ঠান।</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h4>ধর্মীয় অনুষ্ঠান</h4>
+                    <p>বিভিন্ন ধর্মীয় উৎসব ও অনুষ্ঠানের আয়োজন এবং সামাজিক সেবামূলক কার্যক্রম।</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h4>সমাজসেবা</h4>
+                    <p>গরীব ও অসহায়দের সাহায্য, শিক্ষা সহায়তা এবং বিভিন্ন দাতব্য কার্যক্রম।</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Puja Days Section -->
+{% if puja_days %}
+<section class="puja-days-section">
+    <div class="container">
+        <h2 class="puja-days-title animate-on-scroll">দুর্গা পুজার দিনসমূহ</h2>
+        <div class="row">
+            {% for puja_day in puja_days %}
+            <div class="col-lg-4 col-md-6">
+                <div class="puja-day-card animate-on-scroll">
+                    <div class="puja-day-image">
+                        {% if puja_day.image %}
+                            <img src="{{ puja_day.image.url }}" alt="{{ puja_day.title }}">
+                        {% else %}
+                            <div class="d-flex align-items-center justify-content-center bg-gradient" style="height: 200px; background: linear-gradient(135deg, #dc3545, #fd7e14);">
+                                <i class="fas fa-om fa-4x text-white" style="opacity: 0.7;"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="puja-day-content">
+                        <h5 class="puja-day-title">{{ puja_day.title }}</h5>
+                        <div class="puja-day-date">{{ puja_day.get_formatted_date_with_day }}</div>
+                        {% if puja_day.description %}
+                            <p class="puja-day-description">{{ puja_day.description|truncatewords:15 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Gallery Showcase Carousel -->
+{% if featured_albums and featured_albums|length > 0 %}
+<section class="gallery-showcase py-5">
+    <div class="container">
+        <h2 class="section-title animate-on-scroll text-center mb-5">গ্যালারি</h2>
+        
+        <!-- Gallery 4-Column Carousel Slider -->
+        <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+            <div class="carousel-inner">
+                
+                <!-- Demo Slide: Always show for demonstration -->
+                <div class="carousel-item active">
+                    <div class="row g-4">
+                        <!-- Demo Album Cards -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gallery-card-4col">
+                                <div class="gallery-image-container">
+                                    <div class="gallery-placeholder">
+                                        <i class="fas fa-camera fa-3x text-muted"></i>
+                                    </div>
+                                    <div class="gallery-overlay-4col">
+                                        <div class="gallery-content-4col">
+                                            <h5 class="gallery-title-4col">দুর্গা পূজার ছবি</h5>
+                                            <p class="gallery-count-4col">০ টি ছবি</p>
+                                            <a href="#" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gallery-card-4col">
+                                <div class="gallery-image-container">
+                                    <div class="gallery-placeholder">
+                                        <i class="fas fa-images fa-3x text-muted"></i>
+                                    </div>
+                                    <div class="gallery-overlay-4col">
+                                        <div class="gallery-content-4col">
+                                            <h5 class="gallery-title-4col">সাংস্কৃতিক অনুষ্ঠান</h5>
+                                            <p class="gallery-count-4col">০ টি ছবি</p>
+                                            <a href="#" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gallery-card-4col">
+                                <div class="gallery-image-container">
+                                    <div class="gallery-placeholder">
+                                        <i class="fas fa-video fa-3x text-muted"></i>
+                                    </div>
+                                    <div class="gallery-overlay-4col">
+                                        <div class="gallery-content-4col">
+                                            <h5 class="gallery-title-4col">ভিডিও গ্যালারি</h5>
+                                            <p class="gallery-count-4col">০ টি ভিডিও</p>
+                                            <a href="#" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gallery-card-4col gallery-card-empty">
+                                <div class="gallery-image-container">
+                                    <div class="gallery-placeholder">
+                                        <i class="fas fa-plus fa-2x text-muted"></i>
+                                        <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if featured_albums and featured_albums|length > 0 %}
+                <!-- Slide 2: Actual Albums 0-3 -->
+                <div class="carousel-item">
+                    <div class="row g-4">
+                        {% for album in featured_albums|slice:":4" %}
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gallery-card-4col">
+                                <div class="gallery-image-container">
+                                    {% if album.cover_image and album.cover_image.url %}
+                                        <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="gallery-image">
+                                    {% else %}
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-images fa-3x text-muted"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="gallery-overlay-4col">
+                                        <div class="gallery-content-4col">
+                                            <h5 class="gallery-title-4col">{{ album.title }}</h5>
+                                            <p class="gallery-count-4col">{{ album.get_photos_count|default:0 }} টি ছবি</p>
+                                            <a href="{% url 'durga:album_detail' album.id %}" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="gallery-card-info">
+                                    <h6 class="gallery-name">{{ album.title }}</h6>
+                                    <a href="{% url 'durga:album_detail' album.id %}" class="gallery-link">গ্যালারি দেখুন</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                        <!-- Fill empty columns if less than 4 albums -->
+                        {% if featured_albums|length == 1 %}
+                            {% for i in "123" %}
+                            <div class="col-lg-3 col-md-6">
+                                <div class="gallery-card-4col gallery-card-empty">
+                                    <div class="gallery-image-container">
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-plus fa-2x text-muted"></i>
+                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% elif featured_albums|length == 2 %}
+                            {% for i in "12" %}
+                            <div class="col-lg-3 col-md-6">
+                                <div class="gallery-card-4col gallery-card-empty">
+                                    <div class="gallery-image-container">
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-plus fa-2x text-muted"></i>
+                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% elif featured_albums|length == 3 %}
+                            <div class="col-lg-3 col-md-6">
+                                <div class="gallery-card-4col gallery-card-empty">
+                                    <div class="gallery-image-container">
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-plus fa-2x text-muted"></i>
+                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Slide 2: Albums 4-7 (if exists) -->
+                {% if featured_albums|length > 4 %}
+                <div class="carousel-item">
+                    <div class="row g-4">
+                        {% for album in featured_albums|slice:"4:8" %}
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gallery-card-4col">
+                                <div class="gallery-image-container">
+                                    {% if album.cover_image and album.cover_image.url %}
+                                        <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="gallery-image">
+                                    {% else %}
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-images fa-3x text-muted"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="gallery-overlay-4col">
+                                        <div class="gallery-content-4col">
+                                            <h5 class="gallery-title-4col">{{ album.title }}</h5>
+                                            <p class="gallery-count-4col">{{ album.get_photos_count|default:0 }} টি ছবি</p>
+                                            <a href="{% url 'durga:album_detail' album.id %}" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="gallery-card-info">
+                                    <h6 class="gallery-name">{{ album.title }}</h6>
+                                    <a href="{% url 'durga:album_detail' album.id %}" class="gallery-link">গ্যালারি দেখুন</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                        <!-- Fill remaining columns -->
+                        {% with remaining=featured_albums|slice:"4:8"|length %}
+                        {% if remaining == 1 %}
+                            {% for i in "123" %}
+                            <div class="col-lg-3 col-md-6">
+                                <div class="gallery-card-4col gallery-card-empty">
+                                    <div class="gallery-image-container">
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-plus fa-2x text-muted"></i>
+                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% elif remaining == 2 %}
+                            {% for i in "12" %}
+                            <div class="col-lg-3 col-md-6">
+                                <div class="gallery-card-4col gallery-card-empty">
+                                    <div class="gallery-image-container">
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-plus fa-2x text-muted"></i>
+                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% elif remaining == 3 %}
+                            <div class="col-lg-3 col-md-6">
+                                <div class="gallery-card-4col gallery-card-empty">
+                                    <div class="gallery-image-container">
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-plus fa-2x text-muted"></i>
+                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
                 {% endif %}
                 
-                <div class="mb-4">
-                    <p class="h5">ওঁ অজ্ঞান-তিমিরান্দ্বস্য জ্ঞানাঞ্জনশলাকায়া</p>
-                    <p class="h5">চক্ষুরুন্মীলিতং যেন তস্মৈ শ্রীগুরবে নমঃ</p>
-                </div>
-                
-                <a href="{% url 'durga:events' %}" class="btn btn-light btn-lg me-3">অনুষ্ঠান</a>
-                <a href="{% url 'durga:contact' %}" class="btn btn-outline-light btn-lg">যোগাযোগ</a>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-
-
-<!-- Upcoming Events Section -->
-{% if upcoming_events %}
-<section class="py-5 pattern-direct" style="overflow-x: hidden; overflow-y: visible;">
-    <div class="container" style="overflow: visible; position: relative;">
-        <div class="d-flex align-items-center justify-content-between mb-4" style="overflow: visible; position: relative;">
-            <h2 class="section-title mb-0">আসন্ন অনুষ্ঠান</h2>
-            <!-- Spinning Mandala Image -->
-            <div class="mandala-spinner">
-                <img src="{% static 'images/circle-blue.png' %}" alt="Mandala" class="spinning-mandala">
-            </div>
-        </div>
-        <div class="row">
-            {% for event in upcoming_events %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                    {% if event.featured_image %}
-                        <img src="{{ event.featured_image.url }}" class="card-img-top" alt="{{ event.title }}" style="height: 200px; object-fit: cover;">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ event.title }}</h5>
-                        <p class="card-text">{{ event.description|truncatewords:15 }}</p>
-                        <p class="text-muted">
-                            <i class="fas fa-calendar-alt me-2"></i>{{ event.date_time|date:"d F Y, g:i A" }}
-                        </p>
-                        <p class="text-muted">
-                            <i class="fas fa-map-marker-alt me-2"></i>{{ event.location }}
-                        </p>
+                <!-- Slide 3: Albums 8-11 (if exists) -->
+                {% if featured_albums|length > 8 %}
+                <div class="carousel-item">
+                    <div class="row g-4">
+                        {% for album in featured_albums|slice:"8:12" %}
+                        <div class="col-lg-3 col-md-6">
+                            <div class="gallery-card-4col">
+                                <div class="gallery-image-container">
+                                    {% if album.cover_image and album.cover_image.url %}
+                                        <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="gallery-image">
+                                    {% else %}
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-images fa-3x text-muted"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="gallery-overlay-4col">
+                                        <div class="gallery-content-4col">
+                                            <h5 class="gallery-title-4col">{{ album.title }}</h5>
+                                            <p class="gallery-count-4col">{{ album.get_photos_count|default:0 }} টি ছবি</p>
+                                            <a href="{% url 'durga:album_detail' album.id %}" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="gallery-card-info">
+                                    <h6 class="gallery-name">{{ album.title }}</h6>
+                                    <a href="{% url 'durga:album_detail' album.id %}" class="gallery-link">গ্যালারি দেখুন</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                        <!-- Fill remaining columns -->
+                        {% with remaining=featured_albums|slice:"8:12"|length %}
+                        {% if remaining == 1 %}
+                            {% for i in "123" %}
+                            <div class="col-lg-3 col-md-6">
+                                <div class="gallery-card-4col gallery-card-empty">
+                                    <div class="gallery-image-container">
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-plus fa-2x text-muted"></i>
+                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% elif remaining == 2 %}
+                            {% for i in "12" %}
+                            <div class="col-lg-3 col-md-6">
+                                <div class="gallery-card-4col gallery-card-empty">
+                                    <div class="gallery-image-container">
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-plus fa-2x text-muted"></i>
+                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% elif remaining == 3 %}
+                            <div class="col-lg-3 col-md-6">
+                                <div class="gallery-card-4col gallery-card-empty">
+                                    <div class="gallery-image-container">
+                                        <div class="gallery-placeholder">
+                                            <i class="fas fa-plus fa-2x text-muted"></i>
+                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endwith %}
                     </div>
                 </div>
+                {% endif %}
+                {% endif %}
             </div>
-            {% endfor %}
+            
+            <!-- Gallery Carousel Indicators -->
+            <div class="carousel-indicators gallery-carousel-indicators">
+                <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="0" 
+                        class="active" aria-current="true" aria-label="Demo Slide"></button>
+                {% if featured_albums and featured_albums|length > 0 %}
+                <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="1" 
+                        aria-label="Gallery Slide 1"></button>
+                {% endif %}
+                {% if featured_albums|length > 4 %}
+                <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="2" 
+                        aria-label="Gallery Slide 2"></button>
+                {% endif %}
+                {% if featured_albums|length > 8 %}
+                <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="3" 
+                        aria-label="Gallery Slide 3"></button>
+                {% endif %}
+            </div>
+            
+            <!-- Gallery Carousel Controls -->
+            <button class="carousel-control-prev gallery-carousel-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next gallery-carousel-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <div class="text-center">
-            <a href="{% url 'durga:events' %}" class="btn btn-primary">সব অনুষ্ঠান দেখুন</a>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'durga:gallery' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-images me-2"></i>সম্পূর্ণ গ্যালারি দেখুন
+            </a>
         </div>
     </div>
 </section>
 {% endif %}
 
-
-
-<!-- Gallery Preview Section -->
-{% if featured_gallery %}
-<section class="py-5 pattern-direct">
-    <div class="container">
-        <h2 class="section-title text-center">গ্যালারি</h2>
-        <div class="row">
-            {% for item in featured_gallery %}
-            <div class="col-lg-2 col-md-4 col-6 mb-3">
-                <div class="card">
-                    {% if item.gallery_type == 'photo' and item.image %}
-                        <img src="{{ item.image.url }}" class="card-img" alt="{{ item.title }}" style="height: 120px; object-fit: cover;">
-                    {% elif item.gallery_type == 'video' %}
-                        <div class="card-img d-flex align-items-center justify-content-center bg-dark text-white" style="height: 120px;">
-                            <i class="fas fa-play-circle fa-2x"></i>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        <div class="text-center">
-            <a href="{% url 'durga:gallery' %}" class="btn btn-primary">সম্পূর্ণ গ্যালারি দেখুন</a>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- Introduction/About Section -->
-<section class="py-5 pattern-direct">
+<!-- About Section -->
+<section class="about-section">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <h2 class="section-title">ভূমিকা</h2>
-                <div class="lead">
-                    <p>যিনি জ্ঞানাঞ্জনশলাকায় অজ্ঞান-তিমিরাচ্ছন্ন অন্ধজনের চক্ষুরুন্মীলিত করিয়া দেন, সেই শ্রীগুরুর শ্রীপাদপদ্মে সাষ্টাঙ্গে প্রণিপাত করিতেছি।</p>
-                    
-                    <p>আপনাদের সকলকে স্বাগতম। এই ধাম/আশ্রমটি হইল এমন একটি আধ্যাত্মিক কেন্দ্র যেখানে যে কোনো ধর্মবিশ্বাসী বা একেবারেই বিশ্বাস নাই এমন মানুষও প্রতিফলিত হইতে, প্রশ্ন করিতে, আলোচনা শুনিতে, প্রার্থনা করিতে, হরিনাম করিতে / শুনিতে, ধ্যান, জ্ঞান এবং নিজেকে পরের সেবায় উৎসর্গ করিতে আসেন।</p>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="text-center">
-                    <!-- Placeholder for temple image -->
-                    <div class="bg-light rounded p-4" style="height: 300px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-place-of-worship fa-5x text-muted"></i>
+                <div class="about-card animate-on-scroll">
+                    <h2 class="section-title text-start">আমাদের সম্পর্কে</h2>
+                    <p class="lead">
+                        যিনি জ্ঞানাঞ্জনশলাকায় অজ্ঞান-তিমিরাচ্ছন্ন অন্ধজনের চক্ষুরুন্মীলিত করিয়া দেন, সেই শ্রীগুরুর শ্রীপাদপদ্মে সাষ্টাঙ্গে প্রণিপাত করিতেছি।
+                    </p>
+                    <p>
+                        আপনাদের সকলকে স্বাগতম। এই ধাম/আশ্রমটি হইল এমন একটি আধ্যাত্মিক কেন্দ্র যেখানে যে কোনো ধর্মবিশ্বাসী বা একেবারেই বিশ্বাস নাই এমন মানুষও প্রতিফলিত হইতে, প্রশ্ন করিতে, আলোচনা শুনিতে, প্রার্থনা করিতে, হরিনাম করিতে / শুনিতে, ধ্যান, জ্ঞান এবং নিজেকে পরের সেবায় উৎসর্গ করিতে আসেন।
+                    </p>
+                    <div class="mt-4">
+                        <a href="{% url 'durga:committee' %}" class="btn btn-primary me-3">
+                            <i class="fas fa-users me-2"></i>কমিটি
+                        </a>
+                        <a href="{% url 'durga:durga_sangha' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-hands-helping me-2"></i>দুর্গা সংঘ
+                        </a>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <img src="{% static 'images/durga_puja_3.png' %}" alt="Durga Puja" class="img-fluid animate-on-scroll" style="max-width: 350px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));">
             </div>
         </div>
     </div>
 </section>
+
+<script>
+// Animate on scroll
+function animateOnScroll() {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    
+    elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementTop < windowHeight - 100) {
+            element.classList.add('animated');
+        }
+    });
+}
+
+// Counter animation
+function animateCounters() {
+    const counters = document.querySelectorAll('.stat-number[data-count]');
+    
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-count'));
+        let current = 0;
+        const increment = target / 100;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            counter.textContent = Math.floor(current);
+        }, 20);
+    });
+}
+
+// Initialize animations
+document.addEventListener('DOMContentLoaded', function() {
+    animateOnScroll();
+    
+    // Trigger counter animation when stats section is visible
+    const statsSection = document.querySelector('.stats-section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                observer.unobserve(entry.target);
+            }
+        });
+    });
+    
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+});
+
+window.addEventListener('scroll', animateOnScroll);
+
+// Gallery Carousel initialization
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize gallery carousel if exists
+    // Initialize Gallery 4-Column Carousel
+    const galleryCarousel = document.querySelector('#galleryCarousel');
+    if (galleryCarousel) {
+        const carousel = new bootstrap.Carousel(galleryCarousel, {
+            interval: 5000,  // Slower for better viewing
+            ride: 'carousel',
+            pause: 'hover',
+            wrap: true,
+            touch: true
+        });
+        
+        // Enhanced slide events
+        galleryCarousel.addEventListener('slide.bs.carousel', function (e) {
+            console.log('Gallery sliding to:', e.to);
+            // Add slide animation effects
+            const activeSlide = galleryCarousel.querySelector('.carousel-item.active');
+            if (activeSlide) {
+                activeSlide.style.transition = 'all 0.6s ease-in-out';
+            }
+        });
+        
+        galleryCarousel.addEventListener('slid.bs.carousel', function (e) {
+            console.log('Gallery slide completed:', e.to);
+        });
+        
+        // Pause on hover with visual feedback
+        galleryCarousel.addEventListener('mouseenter', function() {
+            carousel.pause();
+            galleryCarousel.style.opacity = '0.95';
+        });
+        
+        galleryCarousel.addEventListener('mouseleave', function() {
+            carousel.cycle();
+            galleryCarousel.style.opacity = '1';
+        });
+        
+        // Auto-start carousel
+        carousel.cycle();
+        
+        console.log('Gallery 4-column carousel initialized successfully');
+    } else {
+        console.error('Gallery carousel element not found');
+    }
+    
+    // Debug gallery links
+    const galleryLinks = document.querySelectorAll('.gallery-link');
+    console.log('Found gallery links:', galleryLinks.length);
+    
+    galleryLinks.forEach((link, index) => {
+        console.log(`Gallery link ${index}:`, link.href);
+        
+        link.addEventListener('click', function(e) {
+            console.log('Gallery link clicked:', this.href);
+            // Allow normal navigation
+            return true;
+        });
+    });
+});
+
+// Update countdown daily
+{% if countdown %}
+setInterval(() => {
+    const countdownElement = document.getElementById('countdown-days');
+    if (countdownElement) {
+        fetch('{% url "durga:home" %}')
+            .then(response => response.text())
+            .then(data => {
+                // This would need a separate API endpoint for real-time updates
+                // For now, the page refresh will update the countdown
+            });
+    }
+}, 86400000); // 24 hours
+{% endif %}
+</script>
 {% endblock %}
