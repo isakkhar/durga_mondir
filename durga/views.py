@@ -61,20 +61,34 @@ def page_detail(request, slug):
 
 
 def events(request):
+    from django.utils import timezone
+    from django.db.models import Case, When, Value, IntegerField
+    
     context = get_site_context()
     
-    event_list = Event.objects.filter(is_active=True).order_by('date_time')
+    now = timezone.now()
     
-    # Filter upcoming/past events
+    # Get all events and order by upcoming first, then by date
+    # Upcoming events in ascending order (nearest first)
+    # Past events in descending order (most recent first)
+    all_events = Event.objects.filter(is_active=True).annotate(
+        is_upcoming_int=Case(
+            When(date_time__gt=now, then=Value(0)),  # Upcoming = 0 (comes first)
+            default=Value(1),  # Past = 1 (comes later)
+            output_field=IntegerField(),
+        )
+    ).order_by('is_upcoming_int', 'date_time')
+    
+    # Filter upcoming/past events for list view
     filter_type = request.GET.get('filter', 'all')
-    if filter_type == 'upcoming':
-        from django.utils import timezone
-        event_list = event_list.filter(date_time__gt=timezone.now())
-    elif filter_type == 'past':
-        from django.utils import timezone
-        event_list = event_list.filter(date_time__lt=timezone.now())
+    event_list = all_events
     
-    # Pagination
+    if filter_type == 'upcoming':
+        event_list = event_list.filter(date_time__gt=now)
+    elif filter_type == 'past':
+        event_list = event_list.filter(date_time__lt=now).order_by('-date_time')
+    
+    # Pagination for list view
     paginator = Paginator(event_list, 6)  # Show 6 events per page
     page_number = request.GET.get('page')
     events_page = paginator.get_page(page_number)

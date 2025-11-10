@@ -4,6 +4,7 @@
 {% block title %}অনুষ্ঠানসমূহ - {{ block.super }}{% endblock %}
 
 {% block extra_css %}
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
 <style>
     /* Background pattern for all pages */
     body {
@@ -25,6 +26,66 @@
         text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         font-weight: 600;
     }
+    
+    /* Calendar styles */
+    #calendar {
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .fc-event {
+        cursor: pointer;
+        border: none;
+        padding: 2px 5px;
+    }
+    
+    .fc-event-upcoming {
+        background-color: #28a745 !important;
+    }
+    
+    .fc-event-past {
+        background-color: #6c757d !important;
+    }
+    
+    .fc .fc-button-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    
+    .fc .fc-button-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+    
+    .fc .fc-button-primary:not(:disabled).fc-button-active {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+    
+    .view-toggle {
+        margin-bottom: 20px;
+    }
+    
+    .list-view .event-item {
+        transition: transform 0.2s;
+    }
+    
+    .list-view .event-item:hover {
+        transform: translateY(-2px);
+    }
+    
+    /* Event modal */
+    .modal-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .event-detail-icon {
+        width: 20px;
+        display: inline-block;
+    }
 </style>
 {% endblock %}
 
@@ -33,18 +94,45 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>অনুষ্ঠানসমূহ</h1>
         
-        <!-- Filter Options -->
-        <div class="btn-group" role="group">
-            <a href="{% url 'durga:events' %}" class="btn {% if filter_type == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}">সকল</a>
-            <a href="{% url 'durga:events' %}?filter=upcoming" class="btn {% if filter_type == 'upcoming' %}btn-primary{% else %}btn-outline-primary{% endif %}">আসন্ন</a>
-            <a href="{% url 'durga:events' %}?filter=past" class="btn {% if filter_type == 'past' %}btn-primary{% else %}btn-outline-primary{% endif %}">অতীত</a>
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <div class="btn-group me-3" role="group">
+                <button type="button" class="btn btn-outline-secondary" id="calendarViewBtn">
+                    <i class="fas fa-calendar-alt me-1"></i> ক্যালেন্ডার
+                </button>
+                <button type="button" class="btn btn-outline-secondary active" id="listViewBtn">
+                    <i class="fas fa-list me-1"></i> তালিকা
+                </button>
+            </div>
+            
+            <!-- Filter Options -->
+            <div class="btn-group" role="group" id="filterButtons">
+                <a href="{% url 'durga:events' %}" class="btn {% if filter_type == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}">সকল</a>
+                <a href="{% url 'durga:events' %}?filter=upcoming" class="btn {% if filter_type == 'upcoming' %}btn-primary{% else %}btn-outline-primary{% endif %}">আসন্ন</a>
+                <a href="{% url 'durga:events' %}?filter=past" class="btn {% if filter_type == 'past' %}btn-primary{% else %}btn-outline-primary{% endif %}">অতীত</a>
+            </div>
         </div>
     </div>
-
-    <div class="row">
-        {% for event in events %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 {% if event.is_upcoming %}border-primary{% endif %}">
+    
+    <!-- Calendar View -->
+    <div id="calendarView" style="display: none;">
+        <div id="calendar"></div>
+    </div>
+    
+    <!-- List View -->
+    <div id="listView" class="list-view">
+        <div class="row">
+            {% for event in events %}
+                <div class="col-lg-4 col-md-6 mb-4 event-item">
+                    <div class="card h-100 {% if event.is_upcoming %}border-primary{% endif %} event-card" 
+                         style="cursor: pointer;"
+                         data-event-id="{{ event.id }}"
+                         data-event-title="{{ event.title }}"
+                         data-event-description="{{ event.description }}"
+                         data-event-datetime="{{ event.date_time|date:'Y-m-d H:i' }}"
+                         data-event-location="{{ event.location }}"
+                         data-event-image="{% if event.featured_image %}{{ event.featured_image.url }}{% endif %}"
+                         data-event-upcoming="{{ event.is_upcoming }}">
                     {% if event.featured_image %}
                         <img src="{{ event.featured_image.url }}" class="card-img-top" alt="{{ event.title }}" style="height: 200px; object-fit: cover;">
                     {% else %}
@@ -78,54 +166,250 @@
                             </p>
                         </div>
                     </div>
+                    </div>
                 </div>
-            </div>
-        {% empty %}
-            <div class="col-12">
-                <div class="text-center py-5">
-                    <i class="fas fa-calendar-alt fa-3x text-muted mb-3"></i>
-                    <h4>কোনো অনুষ্ঠান পাওয়া যায়নি</h4>
-                    {% if filter_type == 'upcoming' %}
-                        <p class="text-muted">বর্তমানে কোনো আসন্ন অনুষ্ঠান নেই।</p>
-                    {% elif filter_type == 'past' %}
-                        <p class="text-muted">কোনো অতীত অনুষ্ঠান পাওয়া যায়নি।</p>
-                    {% else %}
-                        <p class="text-muted">শীঘ্রই নতুন অনুষ্ঠান যোগ করা হবে।</p>
-                    {% endif %}
+            {% empty %}
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="fas fa-calendar-alt fa-3x text-muted mb-3"></i>
+                        <h4>কোনো অনুষ্ঠান পাওয়া যায়নি</h4>
+                        {% if filter_type == 'upcoming' %}
+                            <p class="text-muted">বর্তমানে কোনো আসন্ন অনুষ্ঠান নেই।</p>
+                        {% elif filter_type == 'past' %}
+                            <p class="text-muted">কোনো অতীত অনুষ্ঠান পাওয়া যায়নি।</p>
+                        {% else %}
+                            <p class="text-muted">শীঘ্রই নতুন অনুষ্ঠান যোগ করা হবে।</p>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
 
-    <!-- Pagination -->
-    {% if events.has_other_pages %}
-        <nav aria-label="অনুষ্ঠান পেজিনেশন">
-            <ul class="pagination justify-content-center">
-                {% if events.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ events.previous_page_number }}{% if filter_type != 'all' %}&filter={{ filter_type }}{% endif %}">পূর্ববর্তী</a>
-                    </li>
-                {% endif %}
-
-                {% for num in events.paginator.page_range %}
-                    {% if events.number == num %}
-                        <li class="page-item active">
-                            <span class="page-link">{{ num }}</span>
-                        </li>
-                    {% elif num > events.number|add:'-3' and num < events.number|add:'3' %}
+        <!-- Pagination -->
+        {% if events.has_other_pages %}
+            <nav aria-label="অনুষ্ঠান পেজিনেশন">
+                <ul class="pagination justify-content-center">
+                    {% if events.has_previous %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ num }}{% if filter_type != 'all' %}&filter={{ filter_type }}{% endif %}">{{ num }}</a>
+                            <a class="page-link" href="?page={{ events.previous_page_number }}{% if filter_type != 'all' %}&filter={{ filter_type }}{% endif %}">পূর্ববর্তী</a>
                         </li>
                     {% endif %}
-                {% endfor %}
 
-                {% if events.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ events.next_page_number }}{% if filter_type != 'all' %}&filter={{ filter_type }}{% endif %}">পরবর্তী</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    {% endif %}
+                    {% for num in events.paginator.page_range %}
+                        {% if events.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > events.number|add:'-3' and num < events.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if filter_type != 'all' %}&filter={{ filter_type }}{% endif %}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if events.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ events.next_page_number }}{% if filter_type != 'all' %}&filter={{ filter_type }}{% endif %}">পরবর্তী</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
 </div>
+
+<!-- Event Detail Modal -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventModalLabel">অনুষ্ঠানের বিবরণ</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="modalEventImage" class="mb-3"></div>
+                <h4 id="modalEventTitle" class="mb-3"></h4>
+                <div id="modalEventBadge" class="mb-3"></div>
+                <p id="modalEventDescription" class="mb-4"></p>
+                <div class="event-details">
+                    <p class="mb-2">
+                        <i class="fas fa-calendar-alt event-detail-icon text-primary"></i>
+                        <strong>তারিখ:</strong> <span id="modalEventDate"></span>
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-clock event-detail-icon text-primary"></i>
+                        <strong>সময়:</strong> <span id="modalEventTime"></span>
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-map-marker-alt event-detail-icon text-primary"></i>
+                        <strong>স্থান:</strong> <span id="modalEventLocation"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+
+<!-- Events Data as JSON -->
+<script type="application/json" id="eventsData">
+[
+    {% for event in events %}
+    {
+        "id": {{ event.id }},
+        "title": "{{ event.title|escapejs }}",
+        "start": "{{ event.date_time|date:'Y-m-d' }}",
+        "description": "{{ event.description|escapejs }}",
+        "location": "{{ event.location|escapejs }}",
+        "time": "{{ event.date_time|date:'H:i' }}",
+        "datetime": "{{ event.date_time|date:'Y-m-d H:i' }}",
+        "image": "{% if event.featured_image %}{{ event.featured_image.url }}{% endif %}",
+        "isUpcoming": {{ event.is_upcoming|lower }},
+        "className": "{{ event.is_upcoming|yesno:'fc-event-upcoming,fc-event-past' }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]
+</script>
+
+<script>
+    // Parse events data
+    const allEvents = JSON.parse(document.getElementById('eventsData').textContent);
+
+    let calendar;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize calendar
+        var calendarEl = document.getElementById('calendar');
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'bn',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,dayGridWeek,listMonth'
+            },
+            buttonText: {
+                today: 'আজ',
+                month: 'মাস',
+                week: 'সপ্তাহ',
+                list: 'তালিকা'
+            },
+            events: allEvents,
+            eventClick: function(info) {
+                info.jsEvent.preventDefault();
+                const event = info.event;
+                const eventData = allEvents.find(e => e.id == event.id);
+                
+                if (eventData) {
+                    showEventModal(
+                        eventData.id,
+                        eventData.title,
+                        eventData.description,
+                        eventData.datetime,
+                        eventData.location,
+                        eventData.image,
+                        eventData.isUpcoming
+                    );
+                }
+            },
+            eventDidMount: function(info) {
+                // Add tooltip
+                info.el.title = info.event.title + '\n' + 
+                               info.event.extendedProps.location;
+            }
+        });
+
+        // View toggle functionality
+        const calendarViewBtn = document.getElementById('calendarViewBtn');
+        const listViewBtn = document.getElementById('listViewBtn');
+        const calendarView = document.getElementById('calendarView');
+        const listView = document.getElementById('listView');
+        const filterButtons = document.getElementById('filterButtons');
+
+        calendarViewBtn.addEventListener('click', function() {
+            calendarView.style.display = 'block';
+            listView.style.display = 'none';
+            calendarViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+            filterButtons.style.display = 'none';
+            
+            // Render calendar
+            setTimeout(function() {
+                calendar.render();
+            }, 100);
+        });
+
+        listViewBtn.addEventListener('click', function() {
+            calendarView.style.display = 'none';
+            listView.style.display = 'block';
+            listViewBtn.classList.add('active');
+            calendarViewBtn.classList.remove('active');
+            filterButtons.style.display = 'inline-flex';
+        });
+
+        // Add click handlers to event cards
+        document.querySelectorAll('.event-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                const eventId = this.dataset.eventId;
+                const eventTitle = this.dataset.eventTitle;
+                const eventDescription = this.dataset.eventDescription;
+                const eventDatetime = this.dataset.eventDatetime;
+                const eventLocation = this.dataset.eventLocation;
+                const eventImage = this.dataset.eventImage;
+                const eventUpcoming = this.dataset.eventUpcoming === 'True';
+                
+                showEventModal(eventId, eventTitle, eventDescription, eventDatetime, 
+                              eventLocation, eventImage, eventUpcoming);
+            });
+        });
+    });
+
+    function showEventModal(id, title, description, datetime, location, image, isUpcoming) {
+        // Parse date and time
+        const [date, time] = datetime.split(' ');
+        const dateObj = new Date(date);
+        
+        // Bengali months
+        const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 
+                       'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+        
+        const formattedDate = `${dateObj.getDate()} ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+        
+        // Format time
+        const [hour, minute] = time.split(':');
+        const hourInt = parseInt(hour);
+        const period = hourInt >= 12 ? 'PM' : 'AM';
+        const hour12 = hourInt > 12 ? hourInt - 12 : (hourInt === 0 ? 12 : hourInt);
+        const formattedTime = `${hour12}:${minute} ${period}`;
+        
+        // Set modal content
+        document.getElementById('modalEventTitle').textContent = title;
+        document.getElementById('modalEventDescription').textContent = description;
+        document.getElementById('modalEventDate').textContent = formattedDate;
+        document.getElementById('modalEventTime').textContent = formattedTime;
+        document.getElementById('modalEventLocation').textContent = location;
+        
+        // Set badge
+        const badgeHtml = isUpcoming ? 
+            '<span class="badge bg-success">আসন্ন</span>' : 
+            '<span class="badge bg-secondary">সম্পন্ন</span>';
+        document.getElementById('modalEventBadge').innerHTML = badgeHtml;
+        
+        // Set image
+        const imageDiv = document.getElementById('modalEventImage');
+        if (image) {
+            imageDiv.innerHTML = `<img src="${image}" class="img-fluid rounded" alt="${title}" style="max-height: 300px; width: 100%; object-fit: cover;">`;
+        } else {
+            imageDiv.innerHTML = '';
+        }
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('eventModal'));
+        modal.show();
+    }
+</script>
 {% endblock %}

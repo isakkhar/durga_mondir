@@ -67,6 +67,14 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
+        /* Active link styling */
+        .navbar-nav .nav-link.active {
+            background-color: rgba(255,255,255,0.25);
+            border: 2px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-weight: 700;
+        }
+        
         /* Responsive menu fixes */
         @media (max-width: 991.98px) {
             .navbar-nav .nav-link {
@@ -424,29 +432,29 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'durga:home' %}">প্রচ্ছদ</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'durga:home' %}">প্রচ্ছদ</a>
                     </li>
                     
                     {% for page in menu_pages %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'page_detail' and page.slug == request.resolver_match.kwargs.slug %}active{% endif %}" href="{{ page.get_absolute_url }}">{{ page.title }}</a>
                         </li>
                     {% endfor %}
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'durga:events' %}">অনুষ্ঠান</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'events' %}active{% endif %}" href="{% url 'durga:events' %}">অনুষ্ঠান</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'durga:gallery' %}">গ্যালারি</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'gallery' or request.resolver_match.url_name == 'album_detail' %}active{% endif %}" href="{% url 'durga:gallery' %}">গ্যালারি</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'durga:committee' %}">কমিটি</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'committee' %}active{% endif %}" href="{% url 'durga:committee' %}">কমিটি</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'durga:durga_sangha' %}">দুর্গা সংঘ</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'durga_sangha' %}active{% endif %}" href="{% url 'durga:durga_sangha' %}">দুর্গা সংঘ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'durga:contact' %}">যোগাযোগ</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'durga:contact' %}">যোগাযোগ</a>
                     </li>
                 </ul>
             </div>

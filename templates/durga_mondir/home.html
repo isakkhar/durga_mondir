@@ -227,8 +227,14 @@
     
     /* Gallery Showcase */
     .gallery-showcase {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        background: url('/static/images/background-pattern.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
         padding: 5rem 0;
+        position: relative;
+        overflow: visible;
+        z-index: auto;
     }
     
     .gallery-card {
@@ -237,10 +243,12 @@
         overflow: hidden;
         transition: all 0.3s ease;
         margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
     }
     
     .gallery-card:hover {
         transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
     }
     
     .gallery-card img {
@@ -259,49 +267,67 @@
     #galleryCarousel {
         position: relative;
         margin: 40px 0;
-        padding: 30px 0;
+        padding: 30px 80px;
+        z-index: 1;
+        overflow: visible;
+    }
+    
+    #galleryCarousel .carousel-inner {
+        overflow: visible;
+    }
+    
+    #galleryCarousel .carousel-control-prev,
+    #galleryCarousel .carousel-control-next {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
     }
     
     .gallery-card-4col {
         background: white;
-        border-radius: 15px;
+        border-radius: 20px;
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
-        cursor: pointer;
         position: relative;
-        /* Clean card without shadows */
-        border: 1px solid rgba(0,0,0,0.08);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        border: 1px solid rgba(255,255,255,0.8);
     }
     
     .gallery-card-4col:hover {
-        transform: translateY(-5px);
-        /* Subtle lift effect without shadows */
-        border-color: rgba(255, 153, 86, 0.3);
+        box-shadow: 0 20px 50px rgba(102, 126, 234, 0.25);
+    }
+    
+    .gallery-card-4col:hover .gallery-image {
+        transform: scale(1.05);
     }
     
     .gallery-card-empty {
-        border: 3px dashed rgba(255, 153, 86, 0.3);
-        background: rgba(255, 153, 86, 0.05);
+        border: 3px dashed rgba(255, 153, 86, 0.4);
+        background: linear-gradient(135deg, rgba(255, 153, 86, 0.05), rgba(255, 153, 86, 0.1));
+        box-shadow: none;
     }
     
     .gallery-image-container {
         position: relative;
-        height: 250px;
+        height: 300px;
         overflow: hidden;
-        /* Enhanced image container for clarity */
-        background: #f8f9fa;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: transform 0.3s ease;
+        border-radius: 20px 20px 0 0;
     }
     
     .gallery-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center;
         transition: transform 0.3s ease;
-        /* Clear, sharp image display */
+        display: block;
+        /* Sharp, clear image display */
         image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
         backface-visibility: hidden;
+        -webkit-font-smoothing: antialiased;
     }
     
     .gallery-card-4col:hover .gallery-image {
@@ -326,71 +352,89 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 153, 86, 0.6) 0%, rgba(255, 107, 53, 0.6) 100%);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         opacity: 0;
-        transition: all 0.3s ease;
-        /* Light overlay to show original image better */
+        transition: all 0.4s ease;
+        backdrop-filter: blur(8px);
     }
     
     .gallery-card-4col:hover .gallery-overlay-4col {
-        opacity: 0.9;
-        /* Reduced opacity to keep image visible */
+        opacity: 1;
     }
     
     .gallery-content-4col {
         text-align: center;
         color: white;
         padding: 20px;
+        transform: translateY(20px);
+        transition: transform 0.4s ease;
+    }
+    
+    .gallery-card-4col:hover .gallery-content-4col {
+        transform: translateY(0);
     }
     
     .gallery-title-4col {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
         font-weight: 700;
         margin-bottom: 10px;
-        text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        letter-spacing: 0.5px;
     }
     
     .gallery-count-4col {
-        font-size: 1rem;
-        margin-bottom: 15px;
-        opacity: 0.9;
-        text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        opacity: 0.95;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+        font-weight: 500;
     }
     
     .gallery-btn-4col {
-        padding: 8px 20px;
-        font-size: 0.9rem;
+        padding: 10px 30px;
+        font-size: 1rem;
         font-weight: 600;
         border: 2px solid white;
         color: white;
+        background: rgba(255, 255, 255, 0.1);
         text-decoration: none;
-        border-radius: 25px;
+        border-radius: 30px;
         transition: all 0.3s ease;
+        display: inline-block;
     }
     
     .gallery-btn-4col:hover {
         background: white;
-        color: #ff6b35;
-        transform: translateY(-2px);
+        color: #667eea;
+        transform: scale(1.1);
+        box-shadow: 0 5px 20px rgba(255,255,255,0.4);
     }
     
     /* Gallery Card Info Section */
     .gallery-card-info {
-        padding: 15px;
+        padding: 24px 20px;
         text-align: center;
         background: white;
         border-top: 1px solid rgba(0,0,0,0.05);
+        position: relative;
+        z-index: 10;
     }
     
     .gallery-name {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 8px;
-        line-height: 1.3;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 12px;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 2.8rem;
     }
     
     .gallery-link {
@@ -402,69 +446,97 @@
         padding: 8px 16px;
         border: 2px solid #ff9a56;
         border-radius: 25px;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        z-index: 10;
+        cursor: pointer;
+        pointer-events: all;
+        will-change: transform;
     }
     
     .gallery-link:hover {
         background: #ff9a56;
         color: white;
-        transform: translateY(-2px);
         text-decoration: none;
+        box-shadow: 0 4px 12px rgba(255, 154, 86, 0.3);
+    }
+    
+    .gallery-link:active {
+        transform: scale(0.98);
     }
     
     /* Gallery 4-Column Carousel Indicators */
     .gallery-carousel-indicators {
         bottom: -20px;
         position: static;
-        margin: 30px 0 0 0;
+        margin: 40px 0 0 0;
         justify-content: center;
     }
     
     .gallery-carousel-indicators [data-bs-target] {
-        width: 12px;
-        height: 12px;
+        width: 14px;
+        height: 14px;
         border-radius: 50%;
-        background-color: rgba(255, 153, 86, 0.4);
-        border: 2px solid rgba(255, 153, 86, 0.7);
-        margin: 0 6px;
-        opacity: 0.7;
+        background-color: rgba(102, 126, 234, 0.3);
+        border: 2px solid rgba(102, 126, 234, 0.5);
+        margin: 0 8px;
+        opacity: 0.6;
         transition: all 0.3s ease;
     }
     
     .gallery-carousel-indicators [data-bs-target].active {
-        background-color: #ff9a56;
-        transform: scale(1.2);
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        transform: scale(1.3);
         opacity: 1;
-        box-shadow: 0 0 10px rgba(255, 153, 86, 0.5);
+        box-shadow: 0 0 15px rgba(102, 126, 234, 0.6);
     }
     
     /* Gallery 4-Column Carousel Controls */
-    .gallery-carousel-prev,
-    .gallery-carousel-next {
-        width: 50px;
-        height: 50px;
+    #galleryCarousel .carousel-control-prev,
+    #galleryCarousel .carousel-control-next {
+        width: 60px;
+        height: 60px;
         top: 45%;
         transform: translateY(-50%);
-        background: rgba(255, 153, 86, 0.8);
+        background: linear-gradient(135deg, #667eea, #764ba2) !important;
         border-radius: 50%;
-        opacity: 0.9;
+        opacity: 1 !important;
         transition: all 0.3s ease;
-        z-index: 5;
+        z-index: 1000 !important;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        position: absolute !important;
+        border: none;
+        cursor: pointer !important;
+        pointer-events: all !important;
+        display: flex !important;
     }
     
-    .gallery-carousel-prev:hover,
-    .gallery-carousel-next:hover {
-        background: rgba(255, 107, 53, 0.9);
-        transform: translateY(-50%) scale(1.1);
-        opacity: 1;
+    #galleryCarousel .carousel-control-prev:hover,
+    #galleryCarousel .carousel-control-next:hover {
+        background: linear-gradient(135deg, #764ba2, #667eea) !important;
+        transform: translateY(-50%) scale(1.15);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
     }
     
-    .gallery-carousel-prev {
-        left: -25px;
+    #galleryCarousel .carousel-control-prev:focus,
+    #galleryCarousel .carousel-control-next:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3) !important;
     }
     
-    .gallery-carousel-next {
-        right: -25px;
+    #galleryCarousel .carousel-control-prev {
+        left: 0 !important;
+    }
+    
+    #galleryCarousel .carousel-control-next {
+        right: 0 !important;
+    }
+    
+    #galleryCarousel .carousel-control-prev-icon,
+    #galleryCarousel .carousel-control-next-icon {
+        filter: brightness(0) invert(1);
+        width: 30px;
+        height: 30px;
     }
     
     /* Mobile Responsive for 4-Column Gallery */
@@ -490,14 +562,15 @@
         .gallery-carousel-next {
             width: 40px;
             height: 40px;
+            opacity: 0.8;
         }
         
         .gallery-carousel-prev {
-            left: -20px;
+            left: 5px;
         }
         
         .gallery-carousel-next {
-            right: -20px;
+            right: 5px;
         }
     }
     
@@ -843,12 +916,401 @@
         margin: 1rem auto;
         border-radius: 2px;
     }
+    
+    /* Gallery View All Button */
+    .gallery-view-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white !important;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+        position: relative;
+        z-index: 10;
+        pointer-events: all;
+    }
+    
+    .gallery-view-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+        color: white !important;
+        text-decoration: none;
+    }
+    
+    .gallery-view-btn:active {
+        transform: translateY(-1px);
+    }
+    
+    /* Floating Countdown Widget */
+    .floating-countdown {
+        position: fixed;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 40px rgba(238, 90, 111, 0.5);
+        z-index: 9999;
+        animation: floatingPulse 3s ease-in-out infinite, rotateGlow 8s linear infinite;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .floating-countdown:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 15px 60px rgba(238, 90, 111, 0.7);
+    }
+    
+    .floating-countdown-text {
+        color: white;
+        text-align: center;
+        font-weight: 700;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        line-height: 1.3;
+        padding: 10px;
+    }
+    
+    .floating-countdown-label {
+        font-size: 0.75rem;
+        margin-bottom: 5px;
+        opacity: 0.95;
+    }
+    
+    .floating-countdown-days {
+        font-size: 2.5rem;
+        font-weight: 900;
+        display: block;
+        margin: 5px 0;
+        background: linear-gradient(45deg, #fff, #ffd700);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: none;
+    }
+    
+    .floating-countdown-suffix {
+        font-size: 0.7rem;
+        opacity: 0.9;
+    }
+    
+    /* Rotating glow effect */
+    @keyframes rotateGlow {
+        0% {
+            box-shadow: 0 10px 40px rgba(238, 90, 111, 0.5),
+                        0 0 20px rgba(255, 107, 107, 0.3);
+        }
+        25% {
+            box-shadow: 10px 10px 40px rgba(238, 90, 111, 0.6),
+                        10px 0 30px rgba(255, 107, 107, 0.4);
+        }
+        50% {
+            box-shadow: 0 -10px 40px rgba(238, 90, 111, 0.5),
+                        0 -10px 20px rgba(255, 107, 107, 0.3);
+        }
+        75% {
+            box-shadow: -10px 10px 40px rgba(238, 90, 111, 0.6),
+                        -10px 0 30px rgba(255, 107, 107, 0.4);
+        }
+        100% {
+            box-shadow: 0 10px 40px rgba(238, 90, 111, 0.5),
+                        0 0 20px rgba(255, 107, 107, 0.3);
+        }
+    }
+    
+    @keyframes floatingPulse {
+        0%, 100% {
+            transform: translateY(-50%) scale(1);
+        }
+        50% {
+            transform: translateY(-50%) scale(1.05);
+        }
+    }
+    
+    /* Responsive floating widget */
+    @media (max-width: 768px) {
+        .floating-countdown {
+            width: 90px;
+            height: 90px;
+            left: 10px;
+        }
+        
+        .floating-countdown-label {
+            font-size: 0.6rem;
+        }
+        
+        .floating-countdown-days {
+            font-size: 1.8rem;
+        }
+        
+        .floating-countdown-suffix {
+            font-size: 0.6rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .floating-countdown {
+            width: 80px;
+            height: 80px;
+            left: 5px;
+        }
+        
+        .floating-countdown-label {
+            font-size: 0.55rem;
+        }
+        
+        .floating-countdown-days {
+            font-size: 1.5rem;
+        }
+        
+        .floating-countdown-suffix {
+            font-size: 0.55rem;
+        }
+    }
+    
+    /* Donation Banner Section */
+    .donation-banner {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        padding: 5rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .donation-banner::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.03) 10px,
+            rgba(255, 255, 255, 0.03) 20px
+        );
+        animation: bannerPattern 20s linear infinite;
+    }
+    
+    @keyframes bannerPattern {
+        0% {
+            transform: translate(0, 0);
+        }
+        100% {
+            transform: translate(50px, 50px);
+        }
+    }
+    
+    .donation-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: white;
+    }
+    
+    .donation-icon {
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        backdrop-filter: blur(10px);
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        animation: donationPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes donationPulse {
+        0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+        }
+    }
+    
+    .donation-icon i {
+        font-size: 3rem;
+        color: white;
+    }
+    
+    .donation-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+        animation: fadeInUp 1s ease-out;
+    }
+    
+    .donation-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+        text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+        line-height: 1.6;
+    }
+    
+    .donation-text {
+        font-size: 1.1rem;
+        margin-bottom: 3rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 0.9;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+    }
+    
+    .donation-btn {
+        background: white;
+        color: #f5576c;
+        padding: 18px 50px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        border: none;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .donation-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(245, 87, 108, 0.1);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.5s, height 0.5s;
+    }
+    
+    .donation-btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .donation-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        color: #f5576c;
+    }
+    
+    .donation-btn i {
+        margin-right: 10px;
+        transition: transform 0.3s ease;
+    }
+    
+    .donation-btn:hover i {
+        transform: scale(1.2);
+    }
+    
+    .donation-features {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+    }
+    
+    .donation-feature {
+        text-align: center;
+        color: white;
+    }
+    
+    .donation-feature-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        backdrop-filter: blur(5px);
+    }
+    
+    .donation-feature-icon i {
+        font-size: 1.8rem;
+        color: white;
+    }
+    
+    .donation-feature-text {
+        font-size: 1rem;
+        font-weight: 600;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    /* Responsive Donation Banner */
+    @media (max-width: 768px) {
+        .donation-title {
+            font-size: 2rem;
+        }
+        
+        .donation-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .donation-text {
+            font-size: 1rem;
+        }
+        
+        .donation-btn {
+            padding: 15px 35px;
+            font-size: 1rem;
+        }
+        
+        .donation-features {
+            gap: 2rem;
+        }
+        
+        .donation-icon {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .donation-icon i {
+            font-size: 2.5rem;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block body_class %}home-page{% endblock %}
 
 {% block content %}
+<!-- Floating Countdown Widget -->
+{% if countdown and countdown.is_countdown_active %}
+<div class="floating-countdown" onclick="window.location.href='#countdown'">
+    <div class="floating-countdown-text">
+        <div class="floating-countdown-label">মা আসছে</div>
+        <span class="floating-countdown-days" id="floating-countdown-days">{{ countdown.days_remaining }}</span>
+        <div class="floating-countdown-suffix">দিন পরে</div>
+    </div>
+</div>
+{% endif %}
+
 <!-- Hero Section Dynamic Carousel -->
 {% if slider_items %}
 <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
@@ -948,55 +1410,6 @@
 </section>
 {% endif %}
 
-<!-- Countdown Section -->
-{% if countdown and countdown.is_countdown_active %}
-<section class="countdown-section">
-    <div class="container">
-        <div class="countdown-content">
-            <h2 class="countdown-title">{{ countdown.title }}</h2>
-            <div class="countdown-timer">
-                <p class="countdown-text">{{ countdown.message_before }}</p>
-                <span class="countdown-number" id="countdown-days">{{ countdown.days_remaining }}</span>
-                <p class="countdown-text">{{ countdown.message_after }}</p>
-            </div>
-            <p class="lead">{{ countdown.target_date|date:"d F Y" }} তারিখে</p>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- Statistics Section -->
-<section class="stats-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-item animate-on-scroll">
-                    <span class="stat-number" data-count="50">0</span>
-                    <div class="stat-label">বছরের ঐতিহ্য</div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-item animate-on-scroll">
-                    <span class="stat-number" data-count="1000">0</span>
-                    <div class="stat-label">ভক্ত পরিবার</div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-item animate-on-scroll">
-                    <span class="stat-number" data-count="365">0</span>
-                    <div class="stat-label">দিন সেবা</div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-item animate-on-scroll">
-                    <span class="stat-number" data-count="24">0</span>
-                    <div class="stat-label">ঘন্টা প্রার্থনা</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Features Section -->
 <section class="features-section">
     <div class="container">
@@ -1066,345 +1479,45 @@
 </section>
 {% endif %}
 
-<!-- Gallery Showcase Carousel -->
-{% if featured_albums and featured_albums|length > 0 %}
-<section class="gallery-showcase py-5">
+<!-- Donation Banner -->
+<section class="donation-banner">
     <div class="container">
-        <h2 class="section-title animate-on-scroll text-center mb-5">গ্যালারি</h2>
-        
-        <!-- Gallery 4-Column Carousel Slider -->
-        <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
-            <div class="carousel-inner">
-                
-                <!-- Demo Slide: Always show for demonstration -->
-                <div class="carousel-item active">
-                    <div class="row g-4">
-                        <!-- Demo Album Cards -->
-                        <div class="col-lg-3 col-md-6">
-                            <div class="gallery-card-4col">
-                                <div class="gallery-image-container">
-                                    <div class="gallery-placeholder">
-                                        <i class="fas fa-camera fa-3x text-muted"></i>
-                                    </div>
-                                    <div class="gallery-overlay-4col">
-                                        <div class="gallery-content-4col">
-                                            <h5 class="gallery-title-4col">দুর্গা পূজার ছবি</h5>
-                                            <p class="gallery-count-4col">০ টি ছবি</p>
-                                            <a href="#" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="gallery-card-4col">
-                                <div class="gallery-image-container">
-                                    <div class="gallery-placeholder">
-                                        <i class="fas fa-images fa-3x text-muted"></i>
-                                    </div>
-                                    <div class="gallery-overlay-4col">
-                                        <div class="gallery-content-4col">
-                                            <h5 class="gallery-title-4col">সাংস্কৃতিক অনুষ্ঠান</h5>
-                                            <p class="gallery-count-4col">০ টি ছবি</p>
-                                            <a href="#" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="gallery-card-4col">
-                                <div class="gallery-image-container">
-                                    <div class="gallery-placeholder">
-                                        <i class="fas fa-video fa-3x text-muted"></i>
-                                    </div>
-                                    <div class="gallery-overlay-4col">
-                                        <div class="gallery-content-4col">
-                                            <h5 class="gallery-title-4col">ভিডিও গ্যালারি</h5>
-                                            <p class="gallery-count-4col">০ টি ভিডিও</p>
-                                            <a href="#" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="gallery-card-4col gallery-card-empty">
-                                <div class="gallery-image-container">
-                                    <div class="gallery-placeholder">
-                                        <i class="fas fa-plus fa-2x text-muted"></i>
-                                        <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                {% if featured_albums and featured_albums|length > 0 %}
-                <!-- Slide 2: Actual Albums 0-3 -->
-                <div class="carousel-item">
-                    <div class="row g-4">
-                        {% for album in featured_albums|slice:":4" %}
-                        <div class="col-lg-3 col-md-6">
-                            <div class="gallery-card-4col">
-                                <div class="gallery-image-container">
-                                    {% if album.cover_image and album.cover_image.url %}
-                                        <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="gallery-image">
-                                    {% else %}
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-images fa-3x text-muted"></i>
-                                        </div>
-                                    {% endif %}
-                                    <div class="gallery-overlay-4col">
-                                        <div class="gallery-content-4col">
-                                            <h5 class="gallery-title-4col">{{ album.title }}</h5>
-                                            <p class="gallery-count-4col">{{ album.get_photos_count|default:0 }} টি ছবি</p>
-                                            <a href="{% url 'durga:album_detail' album.id %}" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="gallery-card-info">
-                                    <h6 class="gallery-name">{{ album.title }}</h6>
-                                    <a href="{% url 'durga:album_detail' album.id %}" class="gallery-link">গ্যালারি দেখুন</a>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        
-                        <!-- Fill empty columns if less than 4 albums -->
-                        {% if featured_albums|length == 1 %}
-                            {% for i in "123" %}
-                            <div class="col-lg-3 col-md-6">
-                                <div class="gallery-card-4col gallery-card-empty">
-                                    <div class="gallery-image-container">
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-plus fa-2x text-muted"></i>
-                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        {% elif featured_albums|length == 2 %}
-                            {% for i in "12" %}
-                            <div class="col-lg-3 col-md-6">
-                                <div class="gallery-card-4col gallery-card-empty">
-                                    <div class="gallery-image-container">
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-plus fa-2x text-muted"></i>
-                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        {% elif featured_albums|length == 3 %}
-                            <div class="col-lg-3 col-md-6">
-                                <div class="gallery-card-4col gallery-card-empty">
-                                    <div class="gallery-image-container">
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-plus fa-2x text-muted"></i>
-                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-                
-                <!-- Slide 2: Albums 4-7 (if exists) -->
-                {% if featured_albums|length > 4 %}
-                <div class="carousel-item">
-                    <div class="row g-4">
-                        {% for album in featured_albums|slice:"4:8" %}
-                        <div class="col-lg-3 col-md-6">
-                            <div class="gallery-card-4col">
-                                <div class="gallery-image-container">
-                                    {% if album.cover_image and album.cover_image.url %}
-                                        <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="gallery-image">
-                                    {% else %}
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-images fa-3x text-muted"></i>
-                                        </div>
-                                    {% endif %}
-                                    <div class="gallery-overlay-4col">
-                                        <div class="gallery-content-4col">
-                                            <h5 class="gallery-title-4col">{{ album.title }}</h5>
-                                            <p class="gallery-count-4col">{{ album.get_photos_count|default:0 }} টি ছবি</p>
-                                            <a href="{% url 'durga:album_detail' album.id %}" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="gallery-card-info">
-                                    <h6 class="gallery-name">{{ album.title }}</h6>
-                                    <a href="{% url 'durga:album_detail' album.id %}" class="gallery-link">গ্যালারি দেখুন</a>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        
-                        <!-- Fill remaining columns -->
-                        {% with remaining=featured_albums|slice:"4:8"|length %}
-                        {% if remaining == 1 %}
-                            {% for i in "123" %}
-                            <div class="col-lg-3 col-md-6">
-                                <div class="gallery-card-4col gallery-card-empty">
-                                    <div class="gallery-image-container">
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-plus fa-2x text-muted"></i>
-                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        {% elif remaining == 2 %}
-                            {% for i in "12" %}
-                            <div class="col-lg-3 col-md-6">
-                                <div class="gallery-card-4col gallery-card-empty">
-                                    <div class="gallery-image-container">
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-plus fa-2x text-muted"></i>
-                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        {% elif remaining == 3 %}
-                            <div class="col-lg-3 col-md-6">
-                                <div class="gallery-card-4col gallery-card-empty">
-                                    <div class="gallery-image-container">
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-plus fa-2x text-muted"></i>
-                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                        {% endwith %}
-                    </div>
-                </div>
-                {% endif %}
-                
-                <!-- Slide 3: Albums 8-11 (if exists) -->
-                {% if featured_albums|length > 8 %}
-                <div class="carousel-item">
-                    <div class="row g-4">
-                        {% for album in featured_albums|slice:"8:12" %}
-                        <div class="col-lg-3 col-md-6">
-                            <div class="gallery-card-4col">
-                                <div class="gallery-image-container">
-                                    {% if album.cover_image and album.cover_image.url %}
-                                        <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="gallery-image">
-                                    {% else %}
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-images fa-3x text-muted"></i>
-                                        </div>
-                                    {% endif %}
-                                    <div class="gallery-overlay-4col">
-                                        <div class="gallery-content-4col">
-                                            <h5 class="gallery-title-4col">{{ album.title }}</h5>
-                                            <p class="gallery-count-4col">{{ album.get_photos_count|default:0 }} টি ছবি</p>
-                                            <a href="{% url 'durga:album_detail' album.id %}" class="btn btn-outline-light btn-sm gallery-btn-4col">দেখুন</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="gallery-card-info">
-                                    <h6 class="gallery-name">{{ album.title }}</h6>
-                                    <a href="{% url 'durga:album_detail' album.id %}" class="gallery-link">গ্যালারি দেখুন</a>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        
-                        <!-- Fill remaining columns -->
-                        {% with remaining=featured_albums|slice:"8:12"|length %}
-                        {% if remaining == 1 %}
-                            {% for i in "123" %}
-                            <div class="col-lg-3 col-md-6">
-                                <div class="gallery-card-4col gallery-card-empty">
-                                    <div class="gallery-image-container">
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-plus fa-2x text-muted"></i>
-                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        {% elif remaining == 2 %}
-                            {% for i in "12" %}
-                            <div class="col-lg-3 col-md-6">
-                                <div class="gallery-card-4col gallery-card-empty">
-                                    <div class="gallery-image-container">
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-plus fa-2x text-muted"></i>
-                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        {% elif remaining == 3 %}
-                            <div class="col-lg-3 col-md-6">
-                                <div class="gallery-card-4col gallery-card-empty">
-                                    <div class="gallery-image-container">
-                                        <div class="gallery-placeholder">
-                                            <i class="fas fa-plus fa-2x text-muted"></i>
-                                            <p class="mt-2 text-muted">শীঘ্রই আসছে</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                        {% endwith %}
-                    </div>
-                </div>
-                {% endif %}
-                {% endif %}
+        <div class="donation-content">
+            <div class="donation-icon">
+                <i class="fas fa-hands-helping"></i>
             </div>
-            
-            <!-- Gallery Carousel Indicators -->
-            <div class="carousel-indicators gallery-carousel-indicators">
-                <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="0" 
-                        class="active" aria-current="true" aria-label="Demo Slide"></button>
-                {% if featured_albums and featured_albums|length > 0 %}
-                <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="1" 
-                        aria-label="Gallery Slide 1"></button>
-                {% endif %}
-                {% if featured_albums|length > 4 %}
-                <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="2" 
-                        aria-label="Gallery Slide 2"></button>
-                {% endif %}
-                {% if featured_albums|length > 8 %}
-                <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="3" 
-                        aria-label="Gallery Slide 3"></button>
-                {% endif %}
-            </div>
-            
-            <!-- Gallery Carousel Controls -->
-            <button class="carousel-control-prev gallery-carousel-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next gallery-carousel-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        
-        <div class="text-center mt-4">
-            <a href="{% url 'durga:gallery' %}" class="btn btn-primary btn-lg">
-                <i class="fas fa-images me-2"></i>সম্পূর্ণ গ্যালারি দেখুন
+            <h2 class="donation-title">আপনার দানে আমাদের সহায়তা করুন</h2>
+            <p class="donation-subtitle">মন্দির পরিচালনা ও সেবামূলক কার্যক্রমে আপনার অবদান রাখুন</p>
+            <p class="donation-text">
+                আপনার দানের মাধ্যমে আমরা মন্দিরের নিয়মিত পূজা-অর্চনা, ধর্মীয় অনুষ্ঠান এবং সমাজসেবামূলক কাজ চালিয়ে যেতে পারি। প্রতিটি দান আমাদের কাছে অত্যন্ত মূল্যবান।
+            </p>
+            <a href="{% url 'durga:contact' %}" class="donation-btn">
+                <i class="fas fa-hand-holding-heart"></i>এখনই দান করুন
             </a>
+            
+            <div class="donation-features">
+                <div class="donation-feature">
+                    <div class="donation-feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="donation-feature-text">নিরাপদ</div>
+                </div>
+                <div class="donation-feature">
+                    <div class="donation-feature-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="donation-feature-text">স্বচ্ছতা</div>
+                </div>
+                <div class="donation-feature">
+                    <div class="donation-feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="donation-feature-text">সেবামূলক</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
-{% endif %}
 
 <!-- About Section -->
 <section class="about-section">
@@ -1555,19 +1668,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Update countdown daily
-{% if countdown %}
-setInterval(() => {
-    const countdownElement = document.getElementById('countdown-days');
-    if (countdownElement) {
-        fetch('{% url "durga:home" %}')
-            .then(response => response.text())
-            .then(data => {
-                // This would need a separate API endpoint for real-time updates
-                // For now, the page refresh will update the countdown
-            });
+// Convert English numbers to Bengali
+function convertToBengaliNumber(num) {
+    const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return String(num).split('').map(digit => bengaliDigits[parseInt(digit)] || digit).join('');
+}
+
+// Convert floating countdown number to Bengali
+document.addEventListener('DOMContentLoaded', function() {
+    const floatingCountdownDays = document.getElementById('floating-countdown-days');
+    if (floatingCountdownDays) {
+        const englishNumber = floatingCountdownDays.textContent.trim();
+        floatingCountdownDays.textContent = convertToBengaliNumber(englishNumber);
     }
-}, 86400000); // 24 hours
-{% endif %}
+});
 </script>
 {% endblock %}
