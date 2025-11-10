@@ -5,7 +5,7 @@ from django.http import JsonResponse
 import re
 from .models import (
     Page, Event, Gallery, Contact, SiteSettings, Slider,
-    GalleryAlbum, GalleryPhoto, CommitteeMember, DurgaSangha, DurgaPujaCountdown, PujaDay
+    GalleryAlbum, GalleryPhoto, CommitteeMember, DurgaSangha, DurgaPujaCountdown, PujaDay, DonationInfo
 )
 
 def get_site_context():
@@ -17,9 +17,23 @@ def get_site_context():
     
     menu_pages = Page.objects.filter(show_in_menu=True, is_published=True).order_by('menu_order')
     
+    # Get active countdown for all pages
+    countdown = DurgaPujaCountdown.objects.filter(is_active=True).first()
+    
+    # Convert countdown days to Bengali
+    countdown_days_bangla = None
+    if countdown and countdown.is_countdown_active():
+        days = countdown.days_remaining()
+        # Convert to Bengali digits
+        bangla_digits = {'0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪', 
+                        '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'}
+        countdown_days_bangla = ''.join(bangla_digits.get(d, d) for d in str(days))
+    
     return {
         'site_settings': site_settings,
         'menu_pages': menu_pages,
+        'countdown': countdown,
+        'countdown_days_bangla': countdown_days_bangla,
     }
 
 def home(request):
@@ -41,9 +55,13 @@ def home(request):
     # Get puja days
     puja_days = PujaDay.objects.filter(is_active=True).order_by('order', 'date')[:6]
     
+    # Get donation info
+    donation_info = DonationInfo.objects.filter(is_active=True).first()
+    
     context.update({
         'slider_items': slider_items,
         'upcoming_events': upcoming_events,
+        'donation_info': donation_info,
         'featured_gallery': featured_gallery,
         'countdown': countdown,
         'featured_albums': featured_albums,
@@ -182,27 +200,45 @@ def contact(request):
 
 def committee(request):
     """Committee members view"""
+    from collections import OrderedDict
     context = get_site_context()
     
-    # Get all active committee members ordered by position priority
-    members = CommitteeMember.objects.filter(is_active=True).order_by('order', 'name')
+    # Get all active committee members ordered by category_order, then member order
+    all_members = CommitteeMember.objects.filter(is_active=True).order_by('category_order', 'order', 'name')
+    
+    # Group members by category dynamically while preserving order
+    members_by_category = OrderedDict()
+    for member in all_members:
+        category = member.category
+        if category not in members_by_category:
+            members_by_category[category] = []
+        members_by_category[category].append(member)
     
     context.update({
-        'members': members,
+        'members_by_category': members_by_category,
     })
     
-    return render(request, 'durga_mondir/committee.html', context)
+    return render(request, 'durga_mondir/durga_sangha.html', context)
 
 
 def durga_sangha(request):
     """Durga Sangha members view"""
+    from collections import OrderedDict
     context = get_site_context()
     
-    # Get all active durga sangha members ordered by position priority
-    members = DurgaSangha.objects.filter(is_active=True).order_by('order', 'name')
+    # Get all active durga sangha members ordered by category_order, then member order
+    all_members = DurgaSangha.objects.filter(is_active=True).order_by('category_order', 'order', 'name')
+    
+    # Group members by category dynamically while preserving order
+    members_by_category = OrderedDict()
+    for member in all_members:
+        category = member.category
+        if category not in members_by_category:
+            members_by_category[category] = []
+        members_by_category[category].append(member)
     
     context.update({
-        'members': members,
+        'members_by_category': members_by_category,
     })
     
     return render(request, 'durga_mondir/durga_sangha.html', context)

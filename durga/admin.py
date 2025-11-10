@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Page, Event, Gallery, Contact, SiteSettings, Slider, 
-    GalleryAlbum, GalleryPhoto, CommitteeMember, DurgaSangha, DurgaPujaCountdown, PujaDay
+    GalleryAlbum, GalleryPhoto, CommitteeMember, DurgaSangha, DurgaPujaCountdown, PujaDay, DonationInfo
 )
 
 @admin.register(Page)
@@ -104,6 +104,10 @@ class SiteSettingsAdmin(admin.ModelAdmin):
             'fields': ('google_map_url',),
             'description': 'গুগল ম্যাপের সম্পূর্ণ iframe embed কোড এখানে পেস্ট করুন। Google Maps > Share > Embed a map থেকে কোড কপি করুন।'
         }),
+        ('প্রসাদ হল ও ভক্ত নিবাস', {
+            'fields': ('prasad_hall_image',),
+            'description': 'হোম পেইজে প্রদর্শিত প্রসাদ হল ও ভক্ত নিবাসের ছবি'
+        }),
         ('ফুটার', {
             'fields': ('footer_text',)
         })
@@ -118,15 +122,19 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(CommitteeMember)
 class CommitteeMemberAdmin(admin.ModelAdmin):
-    list_display = ('name', 'position', 'phone', 'order', 'is_active')
-    list_filter = ('position', 'is_active')
+    list_display = ('name', 'position', 'category', 'category_order', 'order', 'phone', 'is_active')
+    list_filter = ('category', 'position', 'is_active')
     search_fields = ('name', 'position', 'phone')
-    list_editable = ('order', 'is_active')
-    ordering = ('order', 'name')
+    list_editable = ('category_order', 'order', 'is_active')
+    ordering = ('category_order', 'order', 'name')
     
     fieldsets = (
         ('ব্যক্তিগত তথ্য', {
             'fields': ('name', 'position', 'image')
+        }),
+        ('ক্যাটাগরি', {
+            'fields': ('category', 'category_order'),
+            'description': 'একই ক্যাটাগরির সকল সদস্যকে একই category_order দিন। ছোট সংখ্যা আগে দেখাবে।'
         }),
         ('যোগাযোগ', {
             'fields': ('phone',)
@@ -139,15 +147,19 @@ class CommitteeMemberAdmin(admin.ModelAdmin):
 
 @admin.register(DurgaSangha)
 class DurgaSanghaAdmin(admin.ModelAdmin):
-    list_display = ('name', 'position', 'phone', 'order', 'is_active')
-    list_filter = ('position', 'is_active')
+    list_display = ('name', 'position', 'category', 'category_order', 'order', 'phone', 'is_active')
+    list_filter = ('category', 'position', 'is_active')
     search_fields = ('name', 'position', 'phone', 'description')
-    list_editable = ('order', 'is_active')
-    ordering = ('order', 'name')
+    list_editable = ('category_order', 'order', 'is_active')
+    ordering = ('category_order', 'order', 'name')
     
     fieldsets = (
         ('ব্যক্তিগত তথ্য', {
             'fields': ('name', 'position', 'image')
+        }),
+        ('ক্যাটাগরি', {
+            'fields': ('category', 'category_order'),
+            'description': 'একই ক্যাটাগরির সকল সদস্যকে একই category_order দিন। ছোট সংখ্যা আগে দেখাবে।'
         }),
         ('যোগাযোগ ও বিবরণ', {
             'fields': ('phone', 'description')
@@ -205,3 +217,34 @@ class PujaDayAdmin(admin.ModelAdmin):
     def get_formatted_date(self, obj):
         return obj.get_formatted_date()
     get_formatted_date.short_description = 'বাংলা তারিখ'
+
+
+@admin.register(DonationInfo)
+class DonationInfoAdmin(admin.ModelAdmin):
+    list_display = ('bank_account_number', 'bkash_number', 'nagad_number', 'is_active', 'updated_at')
+    list_filter = ('is_active', 'created_at')
+    list_editable = ('is_active',)
+    
+    fieldsets = (
+        ('ব্যাংক তথ্য', {
+            'fields': ('bank_name', 'bank_account_name', 'bank_account_number', 'bank_branch', 'bank_routing_number'),
+            'description': 'ব্যাংক সম্পর্কিত সকল তথ্য এখানে দিন'
+        }),
+        ('মোবাইল ব্যাংকিং', {
+            'fields': ('bkash_number', 'nagad_number', 'rocket_number'),
+            'description': 'বিকাশ, নগদ, রকেট নাম্বার'
+        }),
+        ('অতিরিক্ত তথ্য', {
+            'fields': ('other_payment_info', 'donation_note')
+        }),
+        ('সেটিংস', {
+            'fields': ('is_active',)
+        })
+    )
+    
+    def has_add_permission(self, request):
+        # Only allow one instance
+        return not DonationInfo.objects.exists()
+    
+    def has_delete_permission(self, request, obj=None):
+        return False

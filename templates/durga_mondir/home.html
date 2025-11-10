@@ -708,10 +708,6 @@
     
     /* About Section with Durga Images */
     .about-section {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95)),
-                    url('{% static "images/durga_puja_2.png" %}');
-        background-size: cover;
-        background-position: center;
         padding: 5rem 0;
     }
     
@@ -1262,6 +1258,96 @@
         text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     }
     
+    /* Donation Payment Methods */
+    .donation-methods {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .payment-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .payment-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    
+    .payment-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #f5576c;
+    }
+    
+    .payment-header i {
+        font-size: 1.5rem;
+        color: #f5576c;
+    }
+    
+    .payment-header h5 {
+        margin: 0;
+        color: #333;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+    
+    .payment-details {
+        color: #555;
+    }
+    
+    .payment-details p {
+        margin: 0.5rem 0;
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+    
+    .payment-details strong {
+        color: #333;
+        font-weight: 600;
+    }
+    
+    .highlight-number {
+        font-family: 'Courier New', monospace;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #f5576c;
+        background: rgba(245, 87, 108, 0.1);
+        padding: 2px 8px;
+        border-radius: 5px;
+        letter-spacing: 1px;
+    }
+    
+    .donation-note-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .donation-note-card i {
+        font-size: 2rem;
+        color: #f5576c;
+        margin-bottom: 0.5rem;
+    }
+    
+    .donation-note-card p {
+        margin: 0;
+        color: #333;
+        font-size: 1.1rem;
+        font-weight: 500;
+        line-height: 1.6;
+    }
+    
     /* Responsive Donation Banner */
     @media (max-width: 768px) {
         .donation-title {
@@ -1491,8 +1577,79 @@
             <p class="donation-text">
                 আপনার দানের মাধ্যমে আমরা মন্দিরের নিয়মিত পূজা-অর্চনা, ধর্মীয় অনুষ্ঠান এবং সমাজসেবামূলক কাজ চালিয়ে যেতে পারি। প্রতিটি দান আমাদের কাছে অত্যন্ত মূল্যবান।
             </p>
+            
+            {% if donation_info %}
+            <!-- Donation Payment Methods -->
+            <div class="donation-methods mt-4 mb-4">
+                <div class="row g-3">
+                    {% if donation_info.bank_account_number %}
+                    <div class="col-md-6">
+                        <div class="payment-card">
+                            <div class="payment-header">
+                                <i class="fas fa-university"></i>
+                                <h5>ব্যাংক একাউন্ট</h5>
+                            </div>
+                            <div class="payment-details">
+                                {% if donation_info.bank_name %}<p><strong>ব্যাংক:</strong> {{ donation_info.bank_name }}</p>{% endif %}
+                                {% if donation_info.bank_account_name %}<p><strong>একাউন্ট নাম:</strong> {{ donation_info.bank_account_name }}</p>{% endif %}
+                                <p><strong>একাউন্ট নাম্বার:</strong> <span class="highlight-number">{{ donation_info.bank_account_number }}</span></p>
+                                {% if donation_info.bank_branch %}<p><strong>শাখা:</strong> {{ donation_info.bank_branch }}</p>{% endif %}
+                                {% if donation_info.bank_routing_number %}<p><strong>রাউটিং:</strong> {{ donation_info.bank_routing_number }}</p>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if donation_info.bkash_number or donation_info.nagad_number or donation_info.rocket_number %}
+                    <div class="col-md-6">
+                        <div class="payment-card">
+                            <div class="payment-header">
+                                <i class="fas fa-mobile-alt"></i>
+                                <h5>মোবাইল ব্যাংকিং</h5>
+                            </div>
+                            <div class="payment-details">
+                                {% if donation_info.bkash_number %}
+                                <p><strong><i class="fas fa-wallet" style="color: #E2136E;"></i> বিকাশ:</strong> <span class="highlight-number">{{ donation_info.bkash_number }}</span></p>
+                                {% endif %}
+                                {% if donation_info.nagad_number %}
+                                <p><strong><i class="fas fa-wallet" style="color: #F68D2E;"></i> নগদ:</strong> <span class="highlight-number">{{ donation_info.nagad_number }}</span></p>
+                                {% endif %}
+                                {% if donation_info.rocket_number %}
+                                <p><strong><i class="fas fa-wallet" style="color: #8B3A8B;"></i> রকেট:</strong> <span class="highlight-number">{{ donation_info.rocket_number }}</span></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if donation_info.other_payment_info %}
+                    <div class="col-12">
+                        <div class="payment-card">
+                            <div class="payment-header">
+                                <i class="fas fa-info-circle"></i>
+                                <h5>অন্যান্য তথ্য</h5>
+                            </div>
+                            <div class="payment-details">
+                                <p style="white-space: pre-line;">{{ donation_info.other_payment_info }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if donation_info.donation_note %}
+                    <div class="col-12">
+                        <div class="donation-note-card">
+                            <i class="fas fa-heart"></i>
+                            <p>{{ donation_info.donation_note }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
             <a href="{% url 'durga:contact' %}" class="donation-btn">
-                <i class="fas fa-hand-holding-heart"></i>এখনই দান করুন
+                <i class="fas fa-hand-holding-heart"></i>যোগাযোগ করুন
             </a>
             
             <div class="donation-features">
@@ -1518,6 +1675,45 @@
         </div>
     </div>
 </section>
+
+<!-- প্রসাদ হল ও ভক্ত নিবাস Section -->
+{% if site_settings.prasad_hall_image %}
+<section class="prasad-hall-section py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5 animate-on-scroll">
+            <i class="fas fa-landmark me-3"></i>প্রস্তাবিত প্রসাদ হল ও ভক্ত নিবাস
+        </h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="prasad-hall-card animate-on-scroll">
+                    <img src="{{ site_settings.prasad_hall_image.url }}" 
+                         alt="প্রস্তাবিত প্রসাদ হল ও ভক্ত নিবাস" 
+                         class="img-fluid w-100"
+                         style="border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.3); border: 8px solid #fff;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .prasad-hall-section {
+        background: linear-gradient(135deg, rgba(255, 248, 220, 0.3), rgba(255, 235, 205, 0.3));
+    }
+    
+    .prasad-hall-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .prasad-hall-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .prasad-hall-card:hover img {
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4) !important;
+    }
+</style>
+{% endif %}
 
 <!-- About Section -->
 <section class="about-section">
@@ -1548,6 +1744,8 @@
         </div>
     </div>
 </section>
+
+
 
 <script>
 // Animate on scroll

@@ -220,6 +220,11 @@ class SiteSettings(models.Model):
                                       help_text="গুগল ম্যাপের এম্বেড কোড এখানে পেস্ট করুন")
     footer_text = models.TextField(blank=True, verbose_name="ফুটার টেক্সট")
     
+    # প্রসাদ হল ও ভক্ত নিবাস
+    prasad_hall_image = models.ImageField(upload_to='settings/', blank=True, null=True, 
+                                         verbose_name="প্রসাদ হল ও ভক্ত নিবাস ছবি",
+                                         help_text="হোম পেইজে প্রদর্শিত হবে")
+    
     class Meta:
         verbose_name = "সাইট সেটিংস"
         verbose_name_plural = "সাইট সেটিংস"
@@ -230,16 +235,21 @@ class SiteSettings(models.Model):
 class CommitteeMember(models.Model):
     name = models.CharField(max_length=100, verbose_name="নাম")
     position = models.CharField(max_length=100, verbose_name="পদবী")
+    category = models.CharField(max_length=100, default='কার্যনির্বাহী কমিটি', verbose_name="ক্যাটাগরি", 
+                                help_text="যেমন: কার্যনির্বাহী কমিটি, উপদেষ্টা পরিষদ, বিশেষ সদস্য")
+    category_order = models.PositiveIntegerField(default=0, verbose_name="ক্যাটাগরির ক্রম",
+                                                  help_text="ছোট সংখ্যা আগে দেখাবে (যেমন: 1, 2, 3...)")
     image = models.ImageField(upload_to='committee/', verbose_name="ছবি")
     phone = models.CharField(max_length=20, blank=True, verbose_name="মোবাইল নাম্বার")
-    order = models.PositiveIntegerField(default=0, verbose_name="ক্রম")
+    order = models.PositiveIntegerField(default=0, verbose_name="সদস্যের ক্রম",
+                                        help_text="একই ক্যাটাগরির মধ্যে সদস্যের ক্রম")
     is_active = models.BooleanField(default=True, verbose_name="সক্রিয়")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="যোগ করার তারিখ")
     
     class Meta:
         verbose_name = "কমিটির সদস্য"
         verbose_name_plural = "কমিটির সদস্যবর্গ"
-        ordering = ['order', 'name']
+        ordering = ['category_order', 'order', 'name']
     
     def __str__(self):
         return f"{self.name} - {self.position}"
@@ -248,17 +258,22 @@ class CommitteeMember(models.Model):
 class DurgaSangha(models.Model):
     name = models.CharField(max_length=100, verbose_name="নাম")
     position = models.CharField(max_length=100, verbose_name="পদবী")
+    category = models.CharField(max_length=100, default='দুর্গা সংঘ', verbose_name="ক্যাটাগরি", 
+                                help_text="যেমন: দুর্গা সংঘ, উপদেষ্টা, বিশেষ সদস্য")
+    category_order = models.PositiveIntegerField(default=0, verbose_name="ক্যাটাগরির ক্রম",
+                                                  help_text="ছোট সংখ্যা আগে দেখাবে (যেমন: 1, 2, 3...)")
     image = models.ImageField(upload_to='durga_sangha/', verbose_name="ছবি")
     phone = models.CharField(max_length=20, blank=True, verbose_name="মোবাইল নাম্বার")
     description = models.TextField(blank=True, null=True, verbose_name="বিবরণ")
-    order = models.PositiveIntegerField(default=0, verbose_name="ক্রম")
+    order = models.PositiveIntegerField(default=0, verbose_name="সদস্যের ক্রম",
+                                        help_text="একই ক্যাটাগরির মধ্যে সদস্যের ক্রম")
     is_active = models.BooleanField(default=True, verbose_name="সক্রিয়")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="যোগ করার তারিখ")
     
     class Meta:
         verbose_name = "দুর্গা সংঘের সদস্য"
         verbose_name_plural = "দুর্গা সংঘের সদস্যবর্গ"
-        ordering = ['order', 'name']
+        ordering = ['category_order', 'order', 'name']
     
     def __str__(self):
         return f"{self.name} - {self.position}"
@@ -329,5 +344,47 @@ class PujaDay(models.Model):
             0: 'সোমবার', 1: 'মঙ্গলবার', 2: 'বুধবার', 3: 'বৃহস্পতিবার',
             4: 'শুক্রবার', 5: 'শনিবার', 6: 'রবিবার'
         }
+        # Convert date parts to Bengali (no leading zero for single digit dates)
+        bangla_digits = {'0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪', 
+                        '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'}
+        
         day_name = days[self.date.weekday()]
-        return f"{day_name} | {self.date.day:02d} {months[self.date.month]}"
+        # Don't use leading zero for day
+        day = ''.join(bangla_digits.get(d, d) for d in str(self.date.day))
+        month = months[self.date.month]
+        year = ''.join(bangla_digits.get(d, d) for d in str(self.date.year))
+        
+        return f"{day_name} | {day} {month}, {year}"
+
+
+class DonationInfo(models.Model):
+    """দান/অনুদান সংক্রান্ত তথ্য"""
+    bank_name = models.CharField(max_length=200, verbose_name="ব্যাংকের নাম", blank=True)
+    bank_account_name = models.CharField(max_length=200, verbose_name="একাউন্ট নাম", blank=True)
+    bank_account_number = models.CharField(max_length=100, verbose_name="ব্যাংক একাউন্ট নাম্বার", blank=True)
+    bank_branch = models.CharField(max_length=200, verbose_name="ব্যাংক শাখা", blank=True)
+    bank_routing_number = models.CharField(max_length=50, verbose_name="রাউটিং নাম্বার", blank=True)
+    
+    bkash_number = models.CharField(max_length=20, verbose_name="বিকাশ নাম্বার", blank=True,
+                                    help_text="যেমন: ০১৭১১-১২৩৪৫৬")
+    nagad_number = models.CharField(max_length=20, verbose_name="নগদ নাম্বার", blank=True,
+                                    help_text="যেমন: ০১৭১১-১২৩৪৫৬")
+    rocket_number = models.CharField(max_length=20, verbose_name="রকেট নাম্বার", blank=True,
+                                     help_text="যেমন: ০১৭১১-১২৩৪৫৬")
+    
+    other_payment_info = models.TextField(verbose_name="অন্যান্য পেমেন্ট তথ্য", blank=True,
+                                         help_text="অন্য কোন পেমেন্ট পদ্ধতি থাকলে এখানে লিখুন")
+    
+    donation_note = models.TextField(verbose_name="দাতাদের জন্য বিশেষ বার্তা", blank=True,
+                                     help_text="যেমন: দানের জন্য ধন্যবাদ বার্তা বা নির্দেশনা")
+    
+    is_active = models.BooleanField(default=True, verbose_name="সক্রিয়")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="তৈরির তারিখ")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="আপডেটের তারিখ")
+    
+    class Meta:
+        verbose_name = "দান/অনুদান তথ্য"
+        verbose_name_plural = "দান/অনুদান তথ্য"
+    
+    def __str__(self):
+        return "দান/অনুদান তথ্য"

@@ -221,40 +221,41 @@
 <!-- Committee Members -->
 <section class="py-5">
     <div class="container">
-        {% if members %}
-            <h2 class="section-title">কমিটির সদস্যবর্গ</h2>
-            
-            <div class="row">
-                {% for member in members %}
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                        <div class="member-card">
-                            <div class="member-photo" id="photo-{{ member.id }}">
-                                {% if member.image %}
-                                    <img src="{{ member.image.url }}" alt="{{ member.name }}" onload="adjustImageFit(this)">
-                                {% else %}
-                                    <div class="d-flex align-items-center justify-content-center bg-light h-100">
-                                        <i class="fas fa-user fa-4x text-muted"></i>
-                                    </div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="member-info">
-                                <div>
-                                    <h5 class="member-name">{{ member.name }}</h5>
-                                    <div class="member-position">{{ member.position }}</div>
+        {% if members_by_category %}
+            {% for category, members in members_by_category.items %}
+                <h2 class="section-title">{{ category }}</h2>
+                <div class="row mb-5">
+                    {% for member in members %}
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                            <div class="member-card">
+                                <div class="member-photo" id="photo-{{ member.id }}">
+                                    {% if member.image %}
+                                        <img src="{{ member.image.url }}" alt="{{ member.name }}" onload="adjustImageFit(this)">
+                                    {% else %}
+                                        <div class="d-flex align-items-center justify-content-center bg-light h-100">
+                                            <i class="fas fa-user fa-4x text-muted"></i>
+                                        </div>
+                                    {% endif %}
                                 </div>
                                 
-                                {% if member.phone %}
-                                    <div class="member-contact">
-                                        <i class="fas fa-phone"></i>
-                                        {{ member.phone }}
+                                <div class="member-info">
+                                    <div>
+                                        <h5 class="member-name">{{ member.name }}</h5>
+                                        <div class="member-position">{{ member.position }}</div>
                                     </div>
-                                {% endif %}
+                                    
+                                    {% if member.phone %}
+                                        <div class="member-contact">
+                                            <i class="fas fa-phone"></i>
+                                            {{ member.phone }}
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
         {% else %}
             <div class="text-center py-5">
                 <i class="fas fa-users fa-4x text-muted mb-4"></i>
