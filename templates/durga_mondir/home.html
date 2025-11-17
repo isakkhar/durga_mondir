@@ -108,9 +108,6 @@
         text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
         animation: fadeInUp 1s ease-out 0.3s both;
     }
-    
-
-    
     /* Hero Carousel specific styles */
     #heroCarousel .carousel-indicators {
         bottom: 20px;
@@ -224,453 +221,6 @@
         font-size: 1.5rem;
         margin-bottom: 1rem;
     }
-    
-    /* Gallery Showcase */
-    .gallery-showcase {
-        background: url('/static/images/background-pattern.png');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        padding: 5rem 0;
-        position: relative;
-        overflow: visible;
-        z-index: auto;
-    }
-    
-    .gallery-card {
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        margin-bottom: 2rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    }
-    
-    .gallery-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-    }
-    
-    .gallery-card img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-    
-    .gallery-card:hover img {
-        transform: scale(1.1);
-    }
-    
-    /* Gallery Carousel Specific Styles */
-    /* Gallery 4-Column Carousel */
-    #galleryCarousel {
-        position: relative;
-        margin: 40px 0;
-        padding: 30px 80px;
-        z-index: 1;
-        overflow: visible;
-    }
-    
-    #galleryCarousel .carousel-inner {
-        overflow: visible;
-    }
-    
-    #galleryCarousel .carousel-control-prev,
-    #galleryCarousel .carousel-control-next {
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .gallery-card-4col {
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        height: 100%;
-        position: relative;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-        border: 1px solid rgba(255,255,255,0.8);
-    }
-    
-    .gallery-card-4col:hover {
-        box-shadow: 0 20px 50px rgba(102, 126, 234, 0.25);
-    }
-    
-    .gallery-card-4col:hover .gallery-image {
-        transform: scale(1.05);
-    }
-    
-    .gallery-card-empty {
-        border: 3px dashed rgba(255, 153, 86, 0.4);
-        background: linear-gradient(135deg, rgba(255, 153, 86, 0.05), rgba(255, 153, 86, 0.1));
-        box-shadow: none;
-    }
-    
-    .gallery-image-container {
-        position: relative;
-        height: 300px;
-        overflow: hidden;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        transition: transform 0.3s ease;
-        border-radius: 20px 20px 0 0;
-    }
-    
-    .gallery-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        transition: transform 0.3s ease;
-        display: block;
-        /* Sharp, clear image display */
-        image-rendering: -webkit-optimize-contrast;
-        backface-visibility: hidden;
-        -webkit-font-smoothing: antialiased;
-    }
-    
-    .gallery-card-4col:hover .gallery-image {
-        transform: scale(1.05);
-        /* Reduced scale for cleaner look */
-    }
-    
-    .gallery-placeholder {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        color: #6c757d;
-    }
-    
-    .gallery-overlay-4col {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: all 0.4s ease;
-        backdrop-filter: blur(8px);
-    }
-    
-    .gallery-card-4col:hover .gallery-overlay-4col {
-        opacity: 1;
-    }
-    
-    .gallery-content-4col {
-        text-align: center;
-        color: white;
-        padding: 20px;
-        transform: translateY(20px);
-        transition: transform 0.4s ease;
-    }
-    
-    .gallery-card-4col:hover .gallery-content-4col {
-        transform: translateY(0);
-    }
-    
-    .gallery-title-4col {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-        letter-spacing: 0.5px;
-    }
-    
-    .gallery-count-4col {
-        font-size: 1.1rem;
-        margin-bottom: 20px;
-        opacity: 0.95;
-        text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
-        font-weight: 500;
-    }
-    
-    .gallery-btn-4col {
-        padding: 10px 30px;
-        font-size: 1rem;
-        font-weight: 600;
-        border: 2px solid white;
-        color: white;
-        background: rgba(255, 255, 255, 0.1);
-        text-decoration: none;
-        border-radius: 30px;
-        transition: all 0.3s ease;
-        display: inline-block;
-    }
-    
-    .gallery-btn-4col:hover {
-        background: white;
-        color: #667eea;
-        transform: scale(1.1);
-        box-shadow: 0 5px 20px rgba(255,255,255,0.4);
-    }
-    
-    /* Gallery Card Info Section */
-    .gallery-card-info {
-        padding: 24px 20px;
-        text-align: center;
-        background: white;
-        border-top: 1px solid rgba(0,0,0,0.05);
-        position: relative;
-        z-index: 10;
-    }
-    
-    .gallery-name {
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: #2d3748;
-        margin-bottom: 12px;
-        line-height: 1.4;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        min-height: 2.8rem;
-    }
-    
-    .gallery-link {
-        display: inline-block;
-        color: #ff9a56;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 0.9rem;
-        padding: 8px 16px;
-        border: 2px solid #ff9a56;
-        border-radius: 25px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        z-index: 10;
-        cursor: pointer;
-        pointer-events: all;
-        will-change: transform;
-    }
-    
-    .gallery-link:hover {
-        background: #ff9a56;
-        color: white;
-        text-decoration: none;
-        box-shadow: 0 4px 12px rgba(255, 154, 86, 0.3);
-    }
-    
-    .gallery-link:active {
-        transform: scale(0.98);
-    }
-    
-    /* Gallery 4-Column Carousel Indicators */
-    .gallery-carousel-indicators {
-        bottom: -20px;
-        position: static;
-        margin: 40px 0 0 0;
-        justify-content: center;
-    }
-    
-    .gallery-carousel-indicators [data-bs-target] {
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        background-color: rgba(102, 126, 234, 0.3);
-        border: 2px solid rgba(102, 126, 234, 0.5);
-        margin: 0 8px;
-        opacity: 0.6;
-        transition: all 0.3s ease;
-    }
-    
-    .gallery-carousel-indicators [data-bs-target].active {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        transform: scale(1.3);
-        opacity: 1;
-        box-shadow: 0 0 15px rgba(102, 126, 234, 0.6);
-    }
-    
-    /* Gallery 4-Column Carousel Controls */
-    #galleryCarousel .carousel-control-prev,
-    #galleryCarousel .carousel-control-next {
-        width: 60px;
-        height: 60px;
-        top: 45%;
-        transform: translateY(-50%);
-        background: linear-gradient(135deg, #667eea, #764ba2) !important;
-        border-radius: 50%;
-        opacity: 1 !important;
-        transition: all 0.3s ease;
-        z-index: 1000 !important;
-        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
-        position: absolute !important;
-        border: none;
-        cursor: pointer !important;
-        pointer-events: all !important;
-        display: flex !important;
-    }
-    
-    #galleryCarousel .carousel-control-prev:hover,
-    #galleryCarousel .carousel-control-next:hover {
-        background: linear-gradient(135deg, #764ba2, #667eea) !important;
-        transform: translateY(-50%) scale(1.15);
-        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
-    }
-    
-    #galleryCarousel .carousel-control-prev:focus,
-    #galleryCarousel .carousel-control-next:focus {
-        outline: none !important;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3) !important;
-    }
-    
-    #galleryCarousel .carousel-control-prev {
-        left: 0 !important;
-    }
-    
-    #galleryCarousel .carousel-control-next {
-        right: 0 !important;
-    }
-    
-    #galleryCarousel .carousel-control-prev-icon,
-    #galleryCarousel .carousel-control-next-icon {
-        filter: brightness(0) invert(1);
-        width: 30px;
-        height: 30px;
-    }
-    
-    /* Mobile Responsive for 4-Column Gallery */
-    @media (max-width: 768px) {
-        .gallery-image-container {
-            height: 200px;
-        }
-        
-        .gallery-title-4col {
-            font-size: 1.2rem;
-        }
-        
-        .gallery-count-4col {
-            font-size: 0.9rem;
-        }
-        
-        .gallery-btn-4col {
-            font-size: 0.8rem;
-            padding: 6px 16px;
-        }
-        
-        .gallery-carousel-prev,
-        .gallery-carousel-next {
-            width: 40px;
-            height: 40px;
-            opacity: 0.8;
-        }
-        
-        .gallery-carousel-prev {
-            left: 5px;
-        }
-        
-        .gallery-carousel-next {
-            right: 5px;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .gallery-image-container {
-            height: 180px;
-        }
-        
-        .gallery-title-4col {
-            font-size: 1rem;
-        }
-        
-        .gallery-carousel-prev,
-        .gallery-carousel-next {
-            width: 35px;
-            height: 35px;
-        }
-        
-        .gallery-carousel-prev {
-            left: -15px;
-        }
-        
-        .gallery-carousel-next {
-            right: -15px;
-        }
-    }
-    
-    .gallery-indicators {
-        bottom: -50px !important;
-        position: absolute !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        z-index: 10 !important;
-        margin: 0 !important;
-    }
-    
-    .gallery-indicators [data-bs-target] {
-        width: 14px !important;
-        height: 14px !important;
-        border-radius: 50% !important;
-        background-color: rgba(255, 153, 86, 0.5) !important;
-        border: 2px solid rgba(255, 153, 86, 0.8) !important;
-        margin: 0 8px !important;
-        opacity: 0.8 !important;
-    }
-    
-    .gallery-indicators .active {
-        background-color: #044570;
-        transform: scale(1.2);
-        opacity: 1;
-        box-shadow: 0 0 10px rgba(4, 69, 112, 0.5);
-    }
-    
-    .gallery-control-prev,
-    .gallery-control-next {
-        width: 50px !important;
-        height: 50px !important;
-        top: 45% !important;
-        transform: translateY(-50%) !important;
-        background: rgba(255, 153, 86, 0.8) !important;
-        border-radius: 50% !important;
-        opacity: 0.9 !important;
-        transition: all 0.3s ease !important;
-        z-index: 10 !important;
-    }
-    
-    .gallery-control-prev:hover,
-    .gallery-control-next:hover {
-        opacity: 1 !important;
-        background: rgba(255, 107, 53, 0.95) !important;
-        transform: translateY(-50%) scale(1.15) !important;
-    }
-    
-    .gallery-control-prev {
-        left: -30px;
-    }
-    
-    .gallery-control-next {
-        right: -30px;
-    }
-    
-    /* Gallery carousel responsive */
-    @media (max-width: 768px) {
-        .gallery-control-prev {
-            left: -15px;
-        }
-        
-        .gallery-control-next {
-            right: -15px;
-        }
-        
-        .gallery-indicators {
-            bottom: -30px;
-        }
-        
-        #galleryCarousel {
-            padding-bottom: 50px;
-        }
-    }
-    
     /* Features Section */
     .features-section {
         background: linear-gradient(135deg, rgba(4, 69, 112, 0.05), rgba(4, 69, 112, 0.1));
@@ -772,9 +322,6 @@
         border: 3px solid transparent;
         position: relative;
     }
-    
-
-    
     .puja-day-image {
         width: 100%;
         height: 180px;
@@ -1380,6 +927,41 @@
             font-size: 2.5rem;
         }
     }
+
+.services-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px; /* মাঝখানের স্পেস */
+}
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #0A416C;
+    margin: 0;
+    white-space: nowrap; /* লাইন ব্রেক আটকাতে */
+}
+
+.title-icon {
+    width: 110px;
+    height: 110px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 576px) {
+    .services-title-row {
+        gap: 8px;
+    }
+    .title-icon {
+        width: 35px;
+        height: 35px;
+    }
+    .section-title {
+        font-size: 1.6rem;
+    }
+}
+
 </style>
 {% endblock %}
 
@@ -1499,7 +1081,18 @@
 <!-- Features Section -->
 <section class="features-section">
     <div class="container">
-        <h2 class="section-title animate-on-scroll">আমাদের সেবাসমূহ</h2>
+        <div class="services-title-row animate-on-scroll">
+            <lottie-player
+                src="{% static 'images/diwali-diya.json' %}" background="transparent" speed="1"class="title-icon" loop autoplay></lottie-player>
+            <h2 class="section-title">আমাদের সেবাসমূহ</h2>
+            <lottie-player
+                src="{% static 'images/diwali-lamp.json' %}"
+                background="transparent"
+                speed="1"
+                class="title-icon"
+                loop
+                autoplay></lottie-player>
+        </div>
         <div class="row">
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card animate-on-scroll">
@@ -1510,6 +1103,7 @@
                     <p>প্রতিদিন সকাল ও সন্ধ্যায় মা দুর্গার নিয়মিত আরতি ও পূজা অনুষ্ঠান।</p>
                 </div>
             </div>
+
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card animate-on-scroll">
                     <div class="feature-icon">
@@ -1519,6 +1113,7 @@
                     <p>বিভিন্ন ধর্মীয় উৎসব ও অনুষ্ঠানের আয়োজন এবং সামাজিক সেবামূলক কার্যক্রম।</p>
                 </div>
             </div>
+
             <div class="col-lg-4 col-md-6">
                 <div class="feature-card animate-on-scroll">
                     <div class="feature-icon">
@@ -1536,7 +1131,18 @@
 {% if puja_days %}
 <section class="puja-days-section">
     <div class="container">
-        <h2 class="puja-days-title animate-on-scroll">দুর্গা পুজার দিনসমূহ</h2>
+        <div class="services-title-row animate-on-scroll">
+            <lottie-player
+                src="{% static 'images/swastika.json' %}" background="transparent" speed="1"class="title-icon" loop autoplay></lottie-player>
+            <h2 class="section-title">দুর্গা পুজার দিনসমূহ</h2>
+            <lottie-player
+                src="{% static 'images/incenses.json' %}"
+                background="transparent"
+                speed="1"
+                class="title-icon"
+                loop
+                autoplay></lottie-player>
+        </div>
         <div class="row">
             {% for puja_day in puja_days %}
             <div class="col-lg-4 col-md-6">

@@ -27,6 +27,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Animate.css for animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Lottie Player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
     
     <style>
         body {
@@ -516,6 +519,7 @@
                         <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'durga:contact' %}">যোগাযোগ</a>
                     </li>
                 </ul>
+                <lottie-player src="{% static 'images/diwali-rangoli.json' %}"  background="transparent"  speed="1"  style="width:60px; height:60px;"  loop  autoplay></lottie-player>
             </div>
             
         </div>
