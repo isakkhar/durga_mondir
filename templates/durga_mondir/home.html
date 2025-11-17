@@ -757,7 +757,7 @@
     .puja-days-title {
         text-align: center;
         margin-bottom: 4rem;
-        color: #dc3545;
+        color: #044570;
         font-size: 3rem;
         font-weight: 800;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
@@ -802,12 +802,12 @@
     .puja-day-title {
         font-size: 1.1rem;
         font-weight: 700;
-        color: #dc3545;
+        color: #044570;
         margin-bottom: 0.3rem;
     }
     
     .puja-day-date {
-        background: linear-gradient(135deg, #dc3545, #c82333);
+        background: linear-gradient(135deg, #044570, #044570);
         color: white;
         padding: 0.4rem 1rem;
         border-radius: 20px;
@@ -949,9 +949,9 @@
         left: 20px;
         top: 50%;
         transform: translateY(-50%);
-        width: 120px;
-        height: 120px;
-        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+        width: 90px;
+        height: 90px;
+        background: linear-gradient(135deg, #044570 0%, #044570 50%, #044570 100%);
         border-radius: 50%;
         display: flex;
         flex-direction: column;
@@ -986,11 +986,11 @@
     }
     
     .floating-countdown-days {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
         font-weight: 900;
         display: block;
         margin: 5px 0;
-        background: linear-gradient(45deg, #fff, #ffd700);
+        background: linear-gradient(45deg, #fff, #fff);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -1078,7 +1078,7 @@
     
     /* Donation Banner Section */
     .donation-banner {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        background: linear-gradient(135deg, #044570 0%, #044570 100%);
         padding: 5rem 0;
         position: relative;
         overflow: hidden;
@@ -1175,7 +1175,7 @@
     
     .donation-btn {
         background: white;
-        color: #f5576c;
+        color: #044570;
         padding: 18px 50px;
         font-size: 1.2rem;
         font-weight: 700;
@@ -1210,7 +1210,7 @@
     .donation-btn:hover {
         transform: translateY(-5px);
         box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        color: #f5576c;
+        color: #044570;
     }
     
     .donation-btn i {
@@ -1318,8 +1318,8 @@
         font-family: 'Courier New', monospace;
         font-size: 1.1rem;
         font-weight: 700;
-        color: #f5576c;
-        background: rgba(245, 87, 108, 0.1);
+        color: #044570;
+        background: rgba(4, 69, 112, 0.1);
         padding: 2px 8px;
         border-radius: 5px;
         letter-spacing: 1px;
@@ -1421,9 +1421,9 @@
                                             <i class="fas fa-arrow-right me-2"></i>{{ slide.button_text }}
                                         </a> -->
                                     {% endif %}
-                                    <a href="{% url 'durga:contact' %}" class="btn btn-success" >
+                                    <!-- <a href="{% url 'durga:contact' %}" class="btn btn-success" >
                                         <i class="fas fa-envelope me-2"></i>যোগাযোগ
-                                    </a>
+                                    </a> -->
                                 </div>
                             </div>
                         </div>
@@ -1545,7 +1545,7 @@
                         {% if puja_day.image %}
                             <img src="{{ puja_day.image.url }}" alt="{{ puja_day.title }}">
                         {% else %}
-                            <div class="d-flex align-items-center justify-content-center bg-gradient" style="height: 200px; background: linear-gradient(135deg, #dc3545, #fd7e14);">
+                            <div class="d-flex align-items-center justify-content-center bg-gradient" style="height: 200px; background: linear-gradient(135deg, #044570, #044570);">
                                 <i class="fas fa-om fa-4x text-white" style="opacity: 0.7;"></i>
                             </div>
                         {% endif %}
@@ -1590,7 +1590,7 @@
                                 <h5>ব্যাংক একাউন্ট</h5>
                             </div>
                             <div class="payment-details">
-                                {% if donation_info.bank_name %}<p><strong>ব্যাংক:</strong> {{ donation_info.bank_name }}</p>{% endif %}
+                                {% if donation_info.bank_name %}<p><strong>ব্যাংকের নাম:</strong> {{ donation_info.bank_name }}</p>{% endif %}
                                 {% if donation_info.bank_account_name %}<p><strong>একাউন্ট নাম:</strong> {{ donation_info.bank_account_name }}</p>{% endif %}
                                 <p><strong>একাউন্ট নাম্বার:</strong> <span class="highlight-number">{{ donation_info.bank_account_number }}</span></p>
                                 {% if donation_info.bank_branch %}<p><strong>শাখা:</strong> {{ donation_info.bank_branch }}</p>{% endif %}
@@ -1609,13 +1609,13 @@
                             </div>
                             <div class="payment-details">
                                 {% if donation_info.bkash_number %}
-                                <p><strong><i class="fas fa-wallet" style="color: #E2136E;"></i> বিকাশ:</strong> <span class="highlight-number">{{ donation_info.bkash_number }}</span></p>
+                                <p><strong><img src="{% static 'images/bKash-Logo.svg' %}" width="70" alt="bKash"></strong> <span class="highlight-number">{{ donation_info.bkash_number }}</span></p>
                                 {% endif %}
                                 {% if donation_info.nagad_number %}
-                                <p><strong><i class="fas fa-wallet" style="color: #F68D2E;"></i> নগদ:</strong> <span class="highlight-number">{{ donation_info.nagad_number }}</span></p>
+                                <p><strong><img src="{% static 'images/Nagad-Logo.svg' %}" width="70" alt="Nagad"></strong> <span class="highlight-number">{{ donation_info.nagad_number }}</span></p>
                                 {% endif %}
                                 {% if donation_info.rocket_number %}
-                                <p><strong><i class="fas fa-wallet" style="color: #8B3A8B;"></i> রকেট:</strong> <span class="highlight-number">{{ donation_info.rocket_number }}</span></p>
+                                <p><strong><img src="{% static 'images/rocket_logo.png' %}" width="70" alt="Rocket"></strong> <span class="highlight-number">{{ donation_info.rocket_number }}</span></p>
                                 {% endif %}
                             </div>
                         </div>
@@ -1651,27 +1651,6 @@
             <a href="{% url 'durga:contact' %}" class="donation-btn">
                 <i class="fas fa-hand-holding-heart"></i>যোগাযোগ করুন
             </a>
-            
-            <div class="donation-features">
-                <div class="donation-feature">
-                    <div class="donation-feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="donation-feature-text">নিরাপদ</div>
-                </div>
-                <div class="donation-feature">
-                    <div class="donation-feature-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="donation-feature-text">স্বচ্ছতা</div>
-                </div>
-                <div class="donation-feature">
-                    <div class="donation-feature-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <div class="donation-feature-text">সেবামূলক</div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
@@ -1729,10 +1708,10 @@
                         আপনাদের সকলকে স্বাগতম। এই ধাম/আশ্রমটি হইল এমন একটি আধ্যাত্মিক কেন্দ্র যেখানে যে কোনো ধর্মবিশ্বাসী বা একেবারেই বিশ্বাস নাই এমন মানুষও প্রতিফলিত হইতে, প্রশ্ন করিতে, আলোচনা শুনিতে, প্রার্থনা করিতে, হরিনাম করিতে / শুনিতে, ধ্যান, জ্ঞান এবং নিজেকে পরের সেবায় উৎসর্গ করিতে আসেন।
                     </p>
                     <div class="mt-4">
-                        <a href="{% url 'durga:committee' %}" class="btn btn-primary me-3">
+                        <a href="{% url 'durga:committee' %}" class="btn btn-info me-3">
                             <i class="fas fa-users me-2"></i>কমিটি
                         </a>
-                        <a href="{% url 'durga:durga_sangha' %}" class="btn btn-outline-primary">
+                        <a href="{% url 'durga:durga_sangha' %}" class="btn btn-outline-info">
                             <i class="fas fa-hands-helping me-2"></i>দুর্গা সংঘ
                         </a>
                     </div>

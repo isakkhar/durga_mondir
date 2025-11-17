@@ -218,7 +218,7 @@ def committee(request):
         'members_by_category': members_by_category,
     })
     
-    return render(request, 'durga_mondir/durga_sangha.html', context)
+    return render(request, 'durga_mondir/committee.html', context)
 
 
 def durga_sangha(request):

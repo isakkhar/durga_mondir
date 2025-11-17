@@ -36,7 +36,7 @@
         
         /* Custom Navbar Styling - Better readability */
         .navbar {
-            background: linear-gradient(90deg, #2c3e50 0%, #34495e 25%, #e74c3c 50%, #c0392b 75%, #8e44ad 100%) !important;
+            background: linear-gradient(90deg, #044570 0%, #044570 25%, #044570 50%, #044570 75%, #044570 100%) !important;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
             padding: 0.5rem 0;
             min-height: 60px;
@@ -171,7 +171,7 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         .footer {
-            background: #2c3e50;
+            background: #044570;
             color: white;
             padding: 2rem 0;
         }
@@ -517,6 +517,7 @@
                     </li>
                 </ul>
             </div>
+            
         </div>
     </nav>
 
@@ -570,7 +571,7 @@
             
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <p>&copy; ২০২৫ {% if site_settings %}{{ site_settings.site_title }}{% else %}দুর্গা মন্দির{% endif %} | সর্বস্বত্ব সংরক্ষিত</p>
+                    <p>&copy; {% now "Y" %} {% if site_settings %}{{ site_settings.site_title }}{% else %}দুর্গা মন্দির{% endif %} | সর্বস্বত্ব সংরক্ষিত</p>
                     {% if site_settings and site_settings.footer_text %}
                         <p>{{ site_settings.footer_text }}</p>
                     {% endif %}

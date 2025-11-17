@@ -149,7 +149,7 @@ class Contact(models.Model):
 
 # Slider Model
 class Slider(models.Model):
-    title = models.CharField(max_length=200, verbose_name="শিরোনাম")
+    title = models.CharField(max_length=200, blank=True, verbose_name="শিরোনাম")
     subtitle = models.CharField(max_length=300, blank=True, verbose_name="উপশিরোনাম")
     description = models.TextField(blank=True, verbose_name="বিবরণ")
     image = models.ImageField(upload_to='slider/', verbose_name="স্লাইডার ছবি")

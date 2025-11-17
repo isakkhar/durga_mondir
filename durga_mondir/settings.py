@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'durga.apps.DurgaConfig',
+    # 'durga.templatetags.bn_numbers',
 ]
 
 MIDDLEWARE = [
